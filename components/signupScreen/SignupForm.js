@@ -28,7 +28,7 @@ const SignupForm = ({navigation}) => {
             db.collection('users').add({
                 owner_uid: authUser.user.uid,
                 username: username,
-                email: authUser.user.email,
+                email: authUser.user.email, /* DOES USER NEED TO BE CHANGED TO USERNAME??? */
                 profile_picture: await getRandomProfilePicture(),  // Get a random profile picture
             })
             console.log("Firebase signup successful", email, password)

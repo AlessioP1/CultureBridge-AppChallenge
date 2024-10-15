@@ -1,7 +1,8 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Divider } from 'react-native-elements';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { firebase, db } from '../../firebase';
 
 // Icons Constant
 const icons = {
@@ -23,13 +24,29 @@ const icons = {
 };
 
 const Post = ({ post }) => {
+  const handleLike = () => {
+    const currentLikeStatus = !post.likes_by_users.includes(
+      firebase.auth().currentUser.email
+    );
+
+    db.collection('users').doc(post.owner_email).collection('posts').doc(post.id).update({
+      likes_by_users: currentLikeStatus
+        ? firebase.firestore.FieldValue.arrayUnion(firebase.auth().currentUser.email)
+        : firebase.firestore.FieldValue.arrayRemove(firebase.auth().currentUser.email)
+    }).then(() => {
+      console.log('Post likes updated successfully');
+    }).catch((error) => {
+      console.error('Error updating post likes: ', error);
+    }); 
+  }
+
   return (
     <View style={{ marginBottom: 30 }}>
       <Divider width={1} orientation="vertical" />
       <PostHeader post={post} />
       <PostImage post={post} />
       <View style = {{marginHorizontal: 10, marginTop: 10}}>
-        <PostFooter />
+        <PostFooter post={post} handleLike={handleLike}/>
         <Likes post={post} />
         <Caption post={post} />
         <CommentsSection post={post} />
@@ -53,7 +70,7 @@ const PostHeader = ({ post }) => {
           style={styles.story} 
         />
         <Text style={styles.usernameText}>
-          {post.user}
+          {post.username} {/* CHANGED FROM USER TO USERNAME */}
         </Text>
       </View>
       <Text style={{ color: 'black', fontWeight: '900' }}>...</Text>
@@ -75,11 +92,12 @@ const PostImage = ({ post }) => (
   </View>
 );
 
-const PostFooter = () => (
+const PostFooter = ({handleLike, post}) => (
   <View style={styles.footerContainer}>
     <View style={styles.leftFooterIcons}>
-      <TouchableOpacity >
-        <Ionicons name={icons.like.name} size={30} color="black" />
+      <TouchableOpacity onPress={() => handleLike(post)}>
+        <Ionicons name={post.likes_by_users.includes(firebase.auth().currentUser.email) ? 
+          iconsheart-circle-outline.name : icons.like.name} size={30} color="black" />
       </TouchableOpacity>
       <TouchableOpacity>
         <Ionicons name={icons.comment.name} size={30} color="black" />
@@ -97,7 +115,7 @@ const PostFooter = () => (
 const Likes = ({ post }) => (
   <View style={{ flexDirection: 'row', marginTop: -4}}>
     <Text style={{ color: "black", fontWeight: '600', marginLeft: 2 }}>
-      {post.likes.toLocaleString('en')} likes
+      {post.likes_by_users.length.toLocaleString('en')} likes
     </Text>
   </View>
 );
@@ -106,7 +124,7 @@ const Caption = ({ post }) => (
   <View style={{marginTop: 5}}>
     <Text style={{ color: 'black' }}>
       <Text style={{ fontWeight: '600' }}>
-        {post.user}
+        {post.username} {/* CHANGED FROM USER TO USERNAME */}
       </Text> {/* Username in bold */}
       {' '} {/* Space between the username and caption */}
       {post.caption} {/* Display the caption */}
@@ -130,7 +148,7 @@ const Comments = ({post}) => (
   {post.comments.map((comment, index) => (
     <View key={index} style ={{flexDirection: 'row', marginTop: 5}}>
         <Text style={{color: 'black'}}>
-            <Text style = {{fontWeight: '600'}}>{comment.user}</Text>
+            <Text style = {{fontWeight: '600'}}>{comment.username}</Text> {/* CHANGED FROM USER TO USERNAME */}
             {' '} {comment.comment}
         </Text>
     </View>

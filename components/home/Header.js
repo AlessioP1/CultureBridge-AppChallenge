@@ -1,13 +1,25 @@
 import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import React from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { firebase } from '../../firebase';
+
+// Check if we really want this - its to sign out clicking the logo...
+
+const handleSignout = async () => {
+  try{
+    await firebase.auth().signOut();
+    console.log('Signed out successfully');
+  } catch (error) {
+    console.log('Error signing out: ', error);
+  }}
+
 
 const Header = ( {navigation} ) => {
   return (
     <View style={styles.container}>
       {/* Logo and "ulture Bridge" text on the left side */}
       <View style={styles.logoContainer}>
-        <TouchableOpacity onPress={() => console.log('Logo pressed')}>
+        <TouchableOpacity onPress={handleSignout}>
           <Image 
             style={styles.logo} 
             source={require('../../assets/CultureBridgeLogo2.jpg')} 

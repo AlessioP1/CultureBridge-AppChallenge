@@ -1,9 +1,10 @@
 import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { Divider } from 'react-native-elements';
 import validUrl from 'valid-url';
+import { db, firebase } from '../../firebase';
 
 const PLACEHOLDER_IMG = 'https://www.brownweinraub.com/wp-content/uploads/2017/09/placeholder.jpg';
 
@@ -14,16 +15,58 @@ const uploadPostSchema = Yup.object().shape({
 
 const FormikPostUploader = ({navigation}) => {
     const [thumbnailUrl, setThumbnailUrl] = useState(PLACEHOLDER_IMG);
+    const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null); 
+
+    function getUsername() {
+        const user = firebase.auth().currentUser;
+        if (!user) { console.error("User is not logged in."); return; }
+
+        const unsubscribe = db.collection('users').where('owner_uid', '==', user.uid).onSnapshot(
+            snapshot => snapshot.docs.map(doc => {setCurrentLoggedInUser({
+                username: doc.data().username,
+                profilePicture: doc.data().profile_picture
+            })}
+        ));
+        return unsubscribe; 
+    }
+
+    useEffect(() => {
+        getUsername();
+    }, []);
+
+    const uploadPostToFirebase = (imageUrl, caption) => {
+        if (!currentLoggedInUser) {
+            console.error("User data is not loaded yet.");
+            return;
+        }
+    
+        const unsubscribe = db
+            .collection('user')
+            .doc(firebase.auth().currentUser.email)
+            .collection('posts')
+            .add({
+                imageUrl: imageUrl,
+                username: currentLoggedInUser.username, // Ensure username exists
+                profile_picture: currentLoggedInUser.profilePicture,
+                owner_uid: firebase.auth().currentUser.uid,
+                owner_email: firebase.auth().currentUser.email,
+                caption: caption,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                likes_by_users: [],
+                comments: [],
+            })
+            .then(() => navigation.goBack())
+            .catch((error) => console.error("Error posting to Firebase: ", error));
+    
+        return unsubscribe;
+    }
+    
 
     return (
         <Formik
             initialValues={{ caption: '', imageUrl: '' }}
             onSubmit={(values) => {
-                console.log(values);
-                console.log('Your post has been uploaded successfully');
-                navigation.goBack()
-                // Optionally, reset the form after submission
-                // resetForm(); // You can use resetForm to clear the inputs
+                uploadPostToFirebase(values.imageUrl, values.caption);
             }}
             validationSchema={uploadPostSchema}
             validateOnMount={true}
@@ -82,6 +125,7 @@ const FormikPostUploader = ({navigation}) => {
                             Upload Entry
                         </Text>
                     </TouchableOpacity>
+
                 </>
             )}
         </Formik>
