@@ -1,16 +1,13 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Divider } from 'react-native-elements';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { firebase, db } from '../../firebase';
 
 // Icons Constant
 const icons = {
-  like: {
-    name: 'heart-outline', // default state icon
-    likedName: 'heart',     // icon when liked
-    imageUrl: 'https://img.icons8.com/ios/50/000000/like.png', // image for like
-    likedImageUrl: 'https://img.icons8.com/ios-filled/50/fa314a/like.png', // image for liked
+  bookmark: {
+    name: 'bookmark-outline',
   },
   comment: {
     name: 'chatbubble-outline',
@@ -18,36 +15,16 @@ const icons = {
   share: {
     name: 'share-social-outline',
   },
-  save: {
-    name: 'bookmark-outline',
-  },
 };
 
 const Post = ({ post }) => {
-  const handleLike = () => {
-    const currentLikeStatus = !post.likes_by_users.includes(
-      firebase.auth().currentUser.email
-    );
-
-    db.collection('users').doc(post.owner_email).collection('posts').doc(post.id).update({
-      likes_by_users: currentLikeStatus
-        ? firebase.firestore.FieldValue.arrayUnion(firebase.auth().currentUser.email)
-        : firebase.firestore.FieldValue.arrayRemove(firebase.auth().currentUser.email)
-    }).then(() => {
-      console.log('Post likes updated successfully');
-    }).catch((error) => {
-      console.error('Error updating post likes: ', error);
-    }); 
-  }
-
   return (
     <View style={{ marginBottom: 30 }}>
       <Divider width={1} orientation="vertical" />
       <PostHeader post={post} />
       <PostImage post={post} />
-      <View style = {{marginHorizontal: 10, marginTop: 10}}>
-        <PostFooter post={post} handleLike={handleLike}/>
-        <Likes post={post} />
+      <View style={{ marginHorizontal: 10, marginTop: 10 }}>
+        <PostFooter post={post} />
         <Caption post={post} />
         <CommentsSection post={post} />
         <Comments post={post} />
@@ -70,7 +47,7 @@ const PostHeader = ({ post }) => {
           style={styles.story} 
         />
         <Text style={styles.usernameText}>
-          {post.username} {/* CHANGED FROM USER TO USERNAME */}
+          {post.username}
         </Text>
       </View>
       <Text style={{ color: 'black', fontWeight: '900' }}>...</Text>
@@ -92,70 +69,61 @@ const PostImage = ({ post }) => (
   </View>
 );
 
-const PostFooter = ({handleLike, post}) => (
+const PostFooter = ({ post }) => (
   <View style={styles.footerContainer}>
     <View style={styles.leftFooterIcons}>
-      <TouchableOpacity onPress={() => handleLike(post)}>
-        <Ionicons name={post.likes_by_users.includes(firebase.auth().currentUser.email) ? 
-          iconsheart-circle-outline.name : icons.like.name} size={30} color="black" />
+      {/* Bookmark icon now first */}
+      <TouchableOpacity>
+        <Ionicons name={icons.bookmark.name} size={30} color="black" />
       </TouchableOpacity>
+
+      {/* Comment icon */}
       <TouchableOpacity>
         <Ionicons name={icons.comment.name} size={30} color="black" />
       </TouchableOpacity>
+
+      {/* Share icon */}
       <TouchableOpacity>
         <Ionicons name={icons.share.name} size={30} color="black" />
       </TouchableOpacity>
     </View>
-    <TouchableOpacity>
-      <Ionicons name={icons.save.name} size={30} color="black" />
-    </TouchableOpacity>
-  </View>
-);
-
-const Likes = ({ post }) => (
-  <View style={{ flexDirection: 'row', marginTop: -4}}>
-    <Text style={{ color: "black", fontWeight: '600', marginLeft: 2 }}>
-      {post.likes_by_users.length.toLocaleString('en')} likes
-    </Text>
   </View>
 );
 
 const Caption = ({ post }) => (
-  <View style={{marginTop: 5}}>
+  <View style={{ marginTop: 5 }}>
     <Text style={{ color: 'black' }}>
       <Text style={{ fontWeight: '600' }}>
-        {post.username} {/* CHANGED FROM USER TO USERNAME */}
-      </Text> {/* Username in bold */}
-      {' '} {/* Space between the username and caption */}
-      {post.caption} {/* Display the caption */}
+        {post.username}
+      </Text>{' '}
+      {post.caption}
     </Text>
   </View>
 );
 
-const CommentsSection = ({post}) => (
-  <View style={{marginTop: 5}}>
+const CommentsSection = ({ post }) => (
+  <View style={{ marginTop: 5 }}>
     {!!post.comments.length && (
-        <Text style={{color: 'grey'}}>
-          View{post.comments.length > 1 ? ' all' : ''} {post.comments.length} {''}
-          {post.comments.length > 1 ? 'comments' : 'comment'}
-        </Text>
+      <Text style={{ color: 'grey' }}>
+        View{post.comments.length > 1 ? ' all' : ''} {post.comments.length}{' '}
+        {post.comments.length > 1 ? 'comments' : 'comment'}
+      </Text>
     )}
-    </View>
-)
+  </View>
+);
 
-const Comments = ({post}) => (
+const Comments = ({ post }) => (
   <>
-  {post.comments.map((comment, index) => (
-    <View key={index} style ={{flexDirection: 'row', marginTop: 5}}>
-        <Text style={{color: 'black'}}>
-            <Text style = {{fontWeight: '600'}}>{comment.username}</Text> {/* CHANGED FROM USER TO USERNAME */}
-            {' '} {comment.comment}
+    {post.comments.map((comment, index) => (
+      <View key={index} style={{ flexDirection: 'row', marginTop: 5 }}>
+        <Text style={{ color: 'black' }}>
+          <Text style={{ fontWeight: '600' }}>{comment.username}</Text>{' '}
+          {comment.comment}
         </Text>
-    </View>
-  ))}
+      </View>
+    ))}
   </>
-)
-
+);
 
 const styles = StyleSheet.create({
   story: {

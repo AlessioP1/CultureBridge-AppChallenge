@@ -5,9 +5,9 @@ export const bottomTabIcons = [
       inactive: 'home-outline', // Ionicons outline home icon
     },
     {
-      name: 'Community',
-      active: 'people', // Ionicons filled people icon for community
-      inactive: 'people-outline', // Ionicons outline people icon
+      name: 'Resources',
+      active: 'book', // Ionicons filled map icon for demographics
+      inactive: 'book-outline', // Ionicons outline map icon
     },
     {
         name: 'Post',
@@ -15,9 +15,9 @@ export const bottomTabIcons = [
         inactive: 'add-circle-outline' // Ionicons outline book icon
     },
     {
-      name: 'Resources',
-      active: 'book', // Ionicons filled map icon for demographics
-      inactive: 'book-outline', // Ionicons outline map icon
+      name: 'Chat',
+      active: 'chatbubbles', // Ionicons filled people icon for community
+      inactive: 'chatbubbles-outline', // Ionicons outline people icon
     },
     {
       name: 'Profile',

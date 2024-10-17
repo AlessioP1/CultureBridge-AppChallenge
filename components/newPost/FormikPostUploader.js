@@ -13,25 +13,49 @@ const uploadPostSchema = Yup.object().shape({
     caption: Yup.string().max(2200, 'Caption has reached the character limit'),
 });
 
-const FormikPostUploader = ({navigation}) => {
+const FormikPostUploader = ({ navigation }) => {
     const [thumbnailUrl, setThumbnailUrl] = useState(PLACEHOLDER_IMG);
-    const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null); 
+    const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null);
 
-    function getUsername() {
-        const user = firebase.auth().currentUser;
-        if (!user) { console.error("User is not logged in."); return; }
+    // Function to get username and profile picture from Firestore
+    function getUsername(uid) {
+        const unsubscribe = db
+            .collection('users')
+            .where('owner_uid', '==', uid)
+            .onSnapshot(
+                snapshot => {
+                    if (!snapshot.empty) {
+                        snapshot.docs.map(doc => {
+                            setCurrentLoggedInUser({
+                                username: doc.data().username,
+                                profilePicture: doc.data().profile_picture
+                            });
+                        });
+                    } else {
+                        console.error("No user data found for the current user. UID: ", uid);
+                    }
+                },
+                error => {
+                    console.error("Error fetching user data:", error);
+                }
+            );
 
-        const unsubscribe = db.collection('users').where('owner_uid', '==', user.uid).onSnapshot(
-            snapshot => snapshot.docs.map(doc => {setCurrentLoggedInUser({
-                username: doc.data().username,
-                profilePicture: doc.data().profile_picture
-            })}
-        ));
-        return unsubscribe; 
+        return unsubscribe;
     }
 
+    // Effect to listen for authentication state changes
     useEffect(() => {
-        getUsername();
+        const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                console.log("User logged in:", user.uid);
+                getUsername(user.uid); // Pass the user ID to fetch additional user info from Firestore
+            } else {
+                console.error('No user is logged in.');
+            }
+        });
+
+        // Cleanup the listener on unmount
+        return () => unsubscribe();
     }, []);
 
     const uploadPostToFirebase = (imageUrl, caption) => {
@@ -39,7 +63,7 @@ const FormikPostUploader = ({navigation}) => {
             console.error("User data is not loaded yet.");
             return;
         }
-    
+
         const unsubscribe = db
             .collection('user')
             .doc(firebase.auth().currentUser.email)
@@ -57,10 +81,9 @@ const FormikPostUploader = ({navigation}) => {
             })
             .then(() => navigation.goBack())
             .catch((error) => console.error("Error posting to Firebase: ", error));
-    
+
         return unsubscribe;
     }
-    
 
     return (
         <Formik
@@ -125,7 +148,6 @@ const FormikPostUploader = ({navigation}) => {
                             Upload Entry
                         </Text>
                     </TouchableOpacity>
-
                 </>
             )}
         </Formik>
@@ -133,3 +155,4 @@ const FormikPostUploader = ({navigation}) => {
 };
 
 export default FormikPostUploader;
+

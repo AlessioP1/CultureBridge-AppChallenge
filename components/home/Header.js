@@ -30,14 +30,6 @@ const Header = ( {navigation} ) => {
 
       {/* Icons on the right side */}
       <View style={styles.iconsContainer}>
-
-        {/* Messaging icon */}
-        <TouchableOpacity onPress={() => console.log('Direct message pressed')}>
-          <View style={styles.unreadBadge}>
-            <Text style={styles.unreadBadgeText}>11</Text>
-          </View>
-          <Ionicons name="chatbubbles-outline" size={28} color="black" style={styles.icon} />
-        </TouchableOpacity>
         
         {/* Info icon */}
         <TouchableOpacity onPress={() => console.log('Info pressed')}>
