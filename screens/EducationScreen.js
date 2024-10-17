@@ -8,12 +8,6 @@ const EducationScreen = () => {
 
   return (
     <ScrollView style={styles.container}>
-      {/* Banner Image */}
-      <Image
-        source={require('../assets/EducationScreenBanner.jpg')} // Adjust the path based on your folder structure
-        style={styles.banner}
-        resizeMode="cover" // Ensures the image covers the width while keeping the aspect ratio
-      />
 
       {/* Header with Back Arrow */}
       <SafeAreaView>
@@ -24,6 +18,13 @@ const EducationScreen = () => {
           <Text style={styles.headerText}>Financial Education Tips</Text>
         </View>
       </SafeAreaView>
+
+      {/* Banner Image */}
+      <Image
+        source={require('../assets/EducationScreenBanner.jpg')} // Adjust the path based on your folder structure
+        style={styles.banner}
+        resizeMode="cover" // Ensures the image covers the width while keeping the aspect ratio
+      />
 
       {/* Section 1: Building Credit Score */}
       <View style={styles.section}>
