@@ -3,6 +3,7 @@ import React from 'react';
 import { Divider } from 'react-native-elements';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { firebase, db } from '../../firebase';
+import length from 'lodash/size';
 
 // Icons Constant
 const icons = {

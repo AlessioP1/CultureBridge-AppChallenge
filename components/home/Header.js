@@ -71,23 +71,7 @@ const styles = StyleSheet.create({
   icon: {
     marginLeft: 12, // Slightly less spacing between the icons
   },
-  unreadBadge: {
-    backgroundColor: '#FF3250',
-    position: 'absolute',
-    left: 20,
-    bottom: 18,
-    borderRadius: 50,
-    width: 18,  // Slightly reduced size for badge
-    height: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 2000
-  },
-  unreadBadgeText: {
-    color: 'white',
-    fontWeight: '600',
-    fontSize: 10,  // Adjusted font size to fit smaller badge
-  }
+  
 });
 
 export default Header;

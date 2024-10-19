@@ -22,21 +22,28 @@ const SignupForm = ({navigation}) => {
     }
 
     const onSignup = async(email, password, username) => {
-        try{
-            const authUser = await firebase.auth().createUserWithEmailAndPassword(email, password)
+        try {
+            // Create user with email and password using Firebase authentication
+            const authUser = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    
+            // Immediately add the user data to Firestore
+            await db.collection('users')
+                .doc(authUser.user.uid) // Use the UID as the document ID
+                .set({
+                    owner_uid: authUser.user.uid,  // Store the user's UID
+                    username: username,
+                    email: authUser.user.email,    // Store the user's email
+                    profile_picture: await getRandomProfilePicture()  // Get random profile picture
+                });
 
-            db.collection('users').add({
-                owner_uid: authUser.user.uid,
-                username: username,
-                email: authUser.user.email, /* DOES USER NEED TO BE CHANGED TO USERNAME??? */
-                profile_picture: await getRandomProfilePicture(),  // Get a random profile picture
-            })
-            console.log("Firebase signup successful", email, password)
+                console.log(user.uid), // Log the user's UID
+    
+            console.log("Firebase signup successful:", email, password);
         } catch (error) {
-            Alert.alert('Error', error.message)
-
+            Alert.alert('Error', error.message); // Display error message if something goes wrong
         }
-    }
+    };
+    
 
     return (
         <View style={styles.wrapper}>

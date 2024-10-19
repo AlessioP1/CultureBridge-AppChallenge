@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { bottomTabIcons } from '../home/bottomTabIcons'; // Adjust the path as necessary
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
@@ -33,9 +33,6 @@ const BottomTabs = () => {
                 setActiveTab(icon.name); // Update the active tab state
                 // Navigate to the corresponding screen
                 switch (icon.name) {
-                    case 'Post':
-                        navigation.navigate('NewPostScreen');
-                        break;
                     case 'Resources':
                         navigation.navigate('EducationScreen');
                         break;
