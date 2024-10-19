@@ -15,68 +15,45 @@ const HomeScreen = ({ navigation }) => {
       setPosts(snapshot.docs.map(post => ({ id: post.id, ...post.data() })));
     });
 
-    // Clean up the subscription
     return () => unsubscribe();
   }, []);
 
-  // Updated navigation to match your Stack screen names
   const navigateToHub = (hubName) => {
-    switch (hubName) {
-      case 'LatinXLegacy':
-        navigation.navigate('Hub1');
-        break;
-      case 'AsianHorizons':
-        navigation.navigate('Hub2');
-        break;
-      case 'AfroConnect':
-        navigation.navigate('Hub3');
-        break;
-      default:
-        break;
-    }
+    const hubMap = {
+      Latino: 'Hub1',
+      AsianHorizons: 'Hub2',
+      AfroConnect: 'Hub3',
+      NEWConnect: 'Hub4',
+      Chat: 'ChatgptText'
+    };
+    navigation.navigate(hubMap[hubName]);
   };
+
+  const hubs = [
+    { name: 'Latino', label: 'Latino Hub', info: 'Explore the Latin American community.', symbol: '1' },
+    { name: 'AsianHorizons', label: 'Asian Horizons Hub', info: 'Connect with diverse Asian cultures.', symbol: '2' },
+    { name: 'AfroConnect', label: 'AfroConnect Hub', info: 'Celebrate African and Afro-diaspora cultures.', symbol: '3' },
+    { name: 'NEWConnect', label: 'NEW Hub', info: 'NEW.', symbol: '4' },
+    { name: 'Chat', label: 'Try asking anything', info: 'Ask information - powered by AI', symbol: '5' }
+  ];
 
   return (
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <TouchableOpacity style={styles.hubRow} onPress={() => navigateToHub('LatinXLegacy')}>
-          <View style={styles.leftContent}>
-            <View style={styles.iconContent}>
-              <Text style={styles.hubSymbol}>{`1`}</Text>
+        {hubs.map((hub, index) => (
+          <TouchableOpacity key={index} style={styles.hubRow} onPress={() => navigateToHub(hub.name)}>
+            <View style={styles.leftContent}>
+              <View style={styles.iconContent}>
+                <Text style={styles.hubSymbol}>{hub.symbol}</Text>
+              </View>
+              <View style={styles.textContent}>
+                <Text style={styles.hubLabel}>{hub.label}</Text>
+                <Text style={styles.hubInfo}>{hub.info}</Text>
+              </View>
             </View>
-            <View style={styles.textContent}>
-              <Text style={styles.hubLabel}>{`LatinX Legacy Hub`}</Text>
-              <Text style={styles.hubInfo}>{`Explore the Latin American community.`}</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.hubRow} onPress={() => navigateToHub('AsianHorizons')}>
-          <View style={styles.leftContent}>
-            <View style={styles.iconContent}>
-              <Text style={styles.hubSymbol}>{`2`}</Text>
-            </View>
-            <View style={styles.textContent}>
-              <Text style={styles.hubLabel}>{`Asian Horizons Hub`}</Text>
-              <Text style={styles.hubInfo}>{`Connect with diverse Asian cultures.`}</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.hubRow} onPress={() => navigateToHub('AfroConnect')}>
-          <View style={styles.leftContent}>
-            <View style={styles.iconContent}>
-              <Text style={styles.hubSymbol}>{`3`}</Text>
-            </View>
-            <View style={styles.textContent}>
-              <Text style={styles.hubLabel}>{`AfroConnect Hub`}</Text>
-              <Text style={styles.hubInfo}>{`Celebrate African and Afro-diaspora cultures.`}</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-
-        {/* Add more hubs following this format */}
+          </TouchableOpacity>
+        ))}
       </ScrollView>
       <BottomTabs icons={bottomTabIcons} navigation={navigation} isFocused={isFocused} />
     </SafeAreaView>
@@ -100,11 +77,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9F9F9',
     borderRadius: 12,
     width: '90%',
-    elevation: 3, // Android shadow
-    shadowColor: '#000', // iOS shadow color
-    shadowOffset: { width: 0, height: 2 }, // iOS shadow offset
-    shadowOpacity: 0.2, // iOS shadow opacity
-    shadowRadius: 3, // iOS shadow radius
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   leftContent: {
     flexDirection: 'row',
