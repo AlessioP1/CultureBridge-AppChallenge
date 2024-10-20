@@ -37,7 +37,7 @@ npm install axios
 
 Audio: 
 
-yarn add expo-av                               
+yarn add expo-av                       
 yarn add expo-file-system
 npm i -g @nestjs/cli
 yarn add @react-native-voice/voice
@@ -45,4 +45,3 @@ yarn add @google-cloud/text-to-speech
 yarn add openai
 yarn add dotenv
 yarn add cors
-
