@@ -1,20 +1,22 @@
 
 import axios from 'axios';
 import config from './config'; // Adjust the path as needed
+import {useRoute} from '@react-navigation/native';
 
-const sendChatRequest = async (message) => {
+const sendChatRequest = async (message, chatRole) => {
   const apikey = config.apiKey;
-  const maxRetries = 3;
+  const maxRetries = 1;
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       console.log("Message sent to chat: ",message)
+      console.log("chat: ",chatRole)
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
         {
           model: 'gpt-3.5-turbo',
           messages: [
-            { role: 'system', content: 'You are a helpful assistant.' },
+            { role: 'system', content: chatRole },
             { role: 'user', content: message },
           ],
         },

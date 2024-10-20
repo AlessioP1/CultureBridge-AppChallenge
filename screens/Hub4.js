@@ -1,39 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native'; // For navigation
-import Post from '../components/home/Post'; // Import your Post component
-import { db } from '../firebase'; // Import your Firebase configuration
+import { useNavigation, useRoute } from '@react-navigation/native';
+import Post from '../components/home/Post';
+import { db } from '../firebase';
 
 const Hub4 = () => {
-  const navigation = useNavigation(); // Navigation hook to go back
-  const [posts, setPosts] = useState([]); // State to hold posts
+  const route = useRoute();
+  const { resourceId } = route.params; // Access the hubId parameter passed from the resourceId is related to the homescreen
+  const navigation = useNavigation();
+  const [posts, setPosts] = useState([]);
+  const hubId = 'Hub4';
+  console.log(`Entering ${hubId} with resource ID: ${resourceId}`);
 
-  // Fetch posts specific to Hub 2 from Firestore
   useEffect(() => {
-    const unsubscribe = db.collection('hubs').doc('Hub4').collection('posts').onSnapshot(snapshot => {
+    const unsubscribe = db.collection('resources')
+    .doc(resourceId)
+    .collection('hubs')
+    .doc(hubId)
+    .collection('posts')
+    .orderBy('createdAt', 'desc')
+    .onSnapshot(snapshot => {
       setPosts(snapshot.docs.map(post => ({ id: post.id, ...post.data() })));
     });
 
-    // Clean up the listener
     return () => unsubscribe();
   }, []);
 
+  const handleDeletePost = async (postId) => {
+    try {
+      await db.collection('posts').doc(postId).delete();
+      console.log(`Post with ID ${postId} deleted successfully`);
+    } catch (error) {
+      console.error('Error deleting post: ', error);
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
-      {/* Header with Back Arrow */}
       <SafeAreaView>
         <View style={styles.headerContainer}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back" size={30} color="black" />
           </TouchableOpacity>
-          <Text style={styles.headerText}>NEW Hub</Text>
-          {/* Add Post Text and Plus Button */}
+          <Text style={styles.headerText}>Pacific</Text>
           <View style={styles.addPostContainer}>
             <Text style={styles.addPostText}>Add Post</Text>
             <TouchableOpacity
               style={styles.addPostButton}
-              onPress={() => navigation.navigate('NewPostScreen')} // Navigate to NewPostScreen
+              onPress={() => navigation.navigate('NewPostScreen', { hubId, resourceId  })}
             >
               <Ionicons name="add-circle" size={30} color="black" />
             </TouchableOpacity>
@@ -41,25 +56,26 @@ const Hub4 = () => {
         </View>
       </SafeAreaView>
 
-      {/* Banner Image */}
       <Image
-        source={require('../assets/chatgpt.png')} // Adjust the path based on your folder structure
+        source={require('../assets/LatinoHub.jpg')}
         style={styles.banner}
-        resizeMode="cover" // Ensures the image covers the width while keeping the aspect ratio
+        resizeMode="cover"
       />
-
-      {/* Hub Content */}
-      <View style={styles.content}>
-        <Text style={styles.contentText}>Welcome to Hub NEW! Here you can find various resources and information.</Text>
-      </View>
-
-      {/* Display Posts */}
+      <SafeAreaView>
+        <Text style={styles.headerText}>All Posts</Text>
+      </SafeAreaView>
       <View style={styles.postsContainer}>
         {posts.length === 0 ? (
           <Text style={styles.noPostsText}>No posts available</Text>
         ) : (
-          posts.map((post, index) => (
-            <Post post={post} key={index} />
+          posts.map(post => (
+            <Post 
+              key={post.id} 
+              post={post} 
+              onBookmark={(id) => console.log(`Bookmark post with id: ${id}`)} 
+              onDelete={handleDeletePost}
+            />
+
           ))
         )}
       </View>
@@ -76,7 +92,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
     paddingHorizontal: 15,
-    justifyContent: 'space-between', // Align items with space between
+    justifyContent: 'space-between',
   },
   headerText: {
     fontSize: 24,
@@ -85,30 +101,22 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   addPostContainer: {
-    flexDirection: 'row', // Align text and button horizontally
-    alignItems: 'center', // Center the items vertically
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   addPostText: {
     fontSize: 16,
-    color: '#333', // Color for the "Add Post" text
+    color: '#333',
     fontWeight: 'bold',
   },
   addPostButton: {
-    // Style for the add post button
     padding: 10,
-    borderRadius: 25, // Optional: Rounded corners for the button
+    borderRadius: 25,
   },
   banner: {
-    width: '100%', // Full width of the screen
-    height: 200, // Adjust the height as needed for the banner
-    marginBottom: 10, // Space between the banner and the rest of the content
-  },
-  content: {
-    padding: 15,
-  },
-  contentText: {
-    fontSize: 16,
-    color: '#555',
+    width: '100%',
+    height: 100,
+    marginBottom: 10,
   },
   postsContainer: {
     padding: 15,

@@ -2,21 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TextOutput, Button, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native'; // For navigation
-import sendChatRequest from '../components/Chatgpttext/ChatgptTextComponents';
+import sendChatRequest from '../components/AIChatgpttext/AIChatgptTextComponents';
 
-const ChatgptText = () => {
+const AIChatgptText = () => {
   const navigation = useNavigation(); // Navigation hook to go back
-  const [posts, setPosts] = useState([]); // State to hold posts
   const [message, setMessage] = useState('');
   const [botMessage, setBotMessage] = useState('');
   const [conversation, setConversation] = useState([]);
+  const chatRole = 'You are a helpful assistant';
 
   const sendChatMessage = async () => {
     // Add user message to the conversation
     setConversation([...conversation, { role: 'user', content: message }]);
+    
 
     // Send the user message to ChatGPT API
-    const botMessage = await sendChatRequest(message);
+    const botMessage = await sendChatRequest(message, chatRole);
     if (botMessage) {
       // Add bot message to conversation
       setConversation((prevConversation) => [...prevConversation, { role: 'bot', content: botMessage }]);
@@ -42,7 +43,7 @@ const ChatgptText = () => {
 
       {/* Banner Image */}
       <Image
-        source={require('../assets/chatimage.png')} // Adjust the path based on your folder structure
+        source={require('../assets/chatgpt.png')} // Adjust the path based on your folder structure
         style={styles.banner}
         resizeMode="cover" // Ensures the image covers the width while keeping the aspect ratio
       />
@@ -90,8 +91,8 @@ const styles = StyleSheet.create({
   },
   banner: {
     width: '100%', // Full width of the screen
-    height: 200, // Adjust the height as needed for the banner
-    marginBottom: 10, // Space between the banner and the rest of the content
+    height: 100, // Adjust the height as needed for the banner
+    marginBottom: 5, // Space between the banner and the rest of the content
   },
   content: {
     padding: 15,
@@ -135,5 +136,5 @@ const styles = StyleSheet.create({
   
 });
 
-export default ChatgptText;
+export default AIChatgptText;
 

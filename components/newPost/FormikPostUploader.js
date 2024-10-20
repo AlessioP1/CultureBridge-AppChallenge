@@ -6,15 +6,16 @@ import { Divider } from 'react-native-elements';
 import validUrl from 'valid-url';
 import { db, firebase } from '../../firebase';
 
-const PLACEHOLDER_IMG = 'https://www.brownweinraub.com/wp-content/uploads/2017/09/placeholder.jpg';
+
+//const PLACEHOLDER_IMG = 'https://www.brownweinraub.com/wp-content/uploads/2017/09/placeholder.jpg';
 
 const uploadPostSchema = Yup.object().shape({
     imageUrl: Yup.string().url('Image URL must be a valid URL').required('A URL is required'),
     caption: Yup.string().max(2200, 'Caption has reached the character limit'),
 });
 
-const FormikPostUploader = ({ navigation }) => {
-    const [thumbnailUrl, setThumbnailUrl] = useState(PLACEHOLDER_IMG);
+const FormikPostUploader = ({ navigation, hubId, resourceId }) => {
+    const [thumbnailUrl, setThumbnailUrl] = useState(null);
     const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null);
 
     // Function to get username and profile picture from Firestore
@@ -63,10 +64,11 @@ const FormikPostUploader = ({ navigation }) => {
             console.error("User data is not loaded yet.");
             return;
         }
-
-        const unsubscribe = db
-            .collection('user')
-            .doc(firebase.auth().currentUser.email)
+        console.log("post to be added: ", resourceId, "|",  hubId, "|", imageUrl, "|", caption);        
+        const unsubscribe = db.collection('resources')
+            .doc(resourceId)
+            .collection('hubs')
+            .doc(hubId)
             .collection('posts')
             .add({
                 imageUrl: imageUrl,
@@ -87,7 +89,7 @@ const FormikPostUploader = ({ navigation }) => {
 
     return (
         <Formik
-            initialValues={{ caption: '', imageUrl: '' }}
+            initialValues={{ caption: 'Test123', imageUrl: 'https://example.com/' }}
             onSubmit={(values) => {
                 uploadPostToFirebase(values.imageUrl, values.caption);
             }}
@@ -104,12 +106,12 @@ const FormikPostUploader = ({ navigation }) => {
                         }}
                     >
                         <Image 
-                            source={{ uri: validUrl.isUri(thumbnailUrl) ? thumbnailUrl : PLACEHOLDER_IMG }} 
+                            source={{ uri: validUrl.isUri(thumbnailUrl) ? thumbnailUrl : null }} 
                             style={{ width: 100, height: 100 }} 
                         />
                         <View style={{ flex: 1, marginLeft: 12 }}>
                             <TextInput 
-                                style={{ color: 'black', fontSize: 20 }}
+                                style={{ color: 'black', fontSize: 20, textAlign: 'left', }}
                                 placeholder='Write a caption...' 
                                 placeholderTextColor='gray'
                                 multiline={true}
@@ -123,7 +125,7 @@ const FormikPostUploader = ({ navigation }) => {
                     <TextInput 
                         onChange={e => setThumbnailUrl(e.nativeEvent.text)}
                         style={{ color: 'black', fontSize: 18 }}
-                        placeholder='Enter Image Url' 
+                        placeholder='Enter Image Url (optional)' 
                         placeholderTextColor='gray'
                         onChangeText={handleChange('imageUrl')}
                         onBlur={handleBlur('imageUrl')}
@@ -145,7 +147,7 @@ const FormikPostUploader = ({ navigation }) => {
                         disabled={!isValid}
                     >
                         <Text style={{ color: isValid ? 'green' : 'lightgray', fontSize: 18 }}>
-                            Upload Entry
+                            Press here to upload Post
                         </Text>
                     </TouchableOpacity>
                 </>

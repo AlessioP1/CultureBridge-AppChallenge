@@ -21,7 +21,7 @@ const BottomTabs = () => {
                 case 'EducationScreen':
                     setActiveTab('Resources');
                     break;
-                case 'ChatgptText':
+                case 'AIChatgptText':
                     setActiveTab('logo-ionitron');
                     break;
                 case 'ChatScreen':
@@ -50,7 +50,7 @@ const BottomTabs = () => {
                         navigation.navigate('ChatListScreen');
                         break;
                     case 'Robot': // New button for Robot
-                        navigation.navigate('ChatgptText');
+                        navigation.navigate('AIChatgptText');
                         break;
                     case 'Bookmark': // Changed from 'Profile' to 'Bookmark'
                         navigation.navigate('BookmarkScreen'); // Changed from 'ProfileScreen' to 'BookmarkScreen'

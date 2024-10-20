@@ -2,12 +2,15 @@ import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Image } from 'r
 import React from 'react';
 import FormikPostUploader from './FormikPostUploader';
 
-const AddNewPost = ({ navigation }) => (
-    <View style={styles.container}>
+const AddNewPost = ({ navigation, hubId, resourceId }) => {
+    return (
+      <View style={styles.container}>
         <Header navigation={navigation} />
-        <FormikPostUploader navigation = {navigation}/>
-    </View>
-);
+        <FormikPostUploader navigation={navigation} hubId={hubId} resourceId={resourceId}/>
+      </View>
+    );
+  };
+
 
 const Header = ({ navigation }) => (
     <SafeAreaView style={styles.headerContainer}>
@@ -17,7 +20,7 @@ const Header = ({ navigation }) => (
                 style={{ width: 30, height: 30 }}
             />
         </TouchableOpacity>
-        <Text style={styles.headerText}>NEW ENTRY</Text>
+        <Text style={styles.headerText}>Add New Post for Hub</Text>
         <Text></Text>
     </SafeAreaView>
 );
@@ -30,7 +33,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'left',
     },
 
     headerText: {

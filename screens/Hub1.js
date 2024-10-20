@@ -1,21 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation , useRoute} from '@react-navigation/native';
 import Post from '../components/home/Post';
 import { db } from '../firebase';
 
 const Hub1 = () => {
+  const route = useRoute();
+  const { resourceId } = route.params; // Access the hubId parameter passed from the resourceId is related to the homescreen
   const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
-
+  const hubId = 'Hub1';
+  console.log(`Entering ${hubId} with resource ID: ${resourceId}`);
+  
   useEffect(() => {
-    const unsubscribe = db.collection('hubs').doc('Hub1').collection('posts').onSnapshot(snapshot => {
+    const unsubscribe = db.collection('resources')
+    .doc(resourceId)
+    .collection('hubs')
+    .doc(hubId)
+    .collection('posts')
+    .orderBy('createdAt', 'desc')
+    .onSnapshot(snapshot => {
       setPosts(snapshot.docs.map(post => ({ id: post.id, ...post.data() })));
     });
 
     return () => unsubscribe();
   }, []);
+
+  const handleDeletePost = async (postId) => {
+    try {
+      await db.collection('resources').doc(resourceId).collection('hubs').doc(hubId).collection('posts').doc(postId).delete();
+      console.log(`Post with ID ${postId} deleted successfully`);
+    } catch (error) {
+      console.error('Error deleting post: ', error);
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -24,12 +43,12 @@ const Hub1 = () => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back" size={30} color="black" />
           </TouchableOpacity>
-          <Text style={styles.headerText}>Latino Hub</Text>
+          <Text style={styles.headerText}>Latino</Text>
           <View style={styles.addPostContainer}>
             <Text style={styles.addPostText}>Add Post</Text>
             <TouchableOpacity
               style={styles.addPostButton}
-              onPress={() => navigation.navigate('NewPostScreen')}
+              onPress={() => navigation.navigate('NewPostScreen', { hubId, resourceId })}
             >
               <Ionicons name="add-circle" size={30} color="black" />
             </TouchableOpacity>
@@ -42,17 +61,21 @@ const Hub1 = () => {
         style={styles.banner}
         resizeMode="cover"
       />
-
-      <View style={styles.content}>
-        <Text style={styles.contentText}>Welcome to Hub 1! Here you can find various resources and information.</Text>
-      </View>
-
+      <SafeAreaView>
+        <Text style={styles.headerText}>All Posts</Text>
+      </SafeAreaView>
       <View style={styles.postsContainer}>
         {posts.length === 0 ? (
           <Text style={styles.noPostsText}>No posts available</Text>
         ) : (
           posts.map(post => (
-            <Post key={post.id} post={post} />
+            <Post 
+              key={post.id} 
+              post={post} 
+              onBookmark={(id) => console.log(`Bookmark post with id: ${id}`)} 
+              onDelete={handleDeletePost}
+            />
+
           ))
         )}
       </View>
@@ -92,15 +115,8 @@ const styles = StyleSheet.create({
   },
   banner: {
     width: '100%',
-    height: 200,
+    height: 100,
     marginBottom: 10,
-  },
-  content: {
-    padding: 15,
-  },
-  contentText: {
-    fontSize: 16,
-    color: '#555',
   },
   postsContainer: {
     padding: 15,

@@ -10,6 +10,9 @@ Stories.js was made in components
 use navigation to create new screens basically
 add the navigation each time, and then switch screens
 
+npm install expo
+npm install expo-cli
+npx expo install 
 
 yarn adds
 

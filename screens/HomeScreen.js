@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Header from '../components/home/Header';
 import BottomTabs from '../components/home/BottomTabs';
@@ -18,38 +18,41 @@ const HomeScreen = ({ navigation }) => {
     return () => unsubscribe();
   }, []);
 
-  const navigateToHub = (hubName) => {
-    const hubMap = {
-      Latino: 'Hub1',
-      AsianHorizons: 'Hub2',
-      AfroConnect: 'Hub3',
-      NEWConnect: 'Hub4',
-      // Chat: 'ChatgptText'
+  const navigateToResource = (resourceName) => {
+    const resourceMap = {
+      LocalCommunity: 'Resource1',
+      Financial: 'Resource2',
+      Healthcare: 'Resource3',
+      Employment: 'Resource4',
+      Transportation: 'Resource5',
+      Language: 'Resource6',
+    
     };
-    navigation.navigate(hubMap[hubName]);
+    navigation.navigate(resourceMap[resourceName]);
   };
 
-  const hubs = [
-    { name: 'Latino', label: 'Latino Hub', info: 'Explore the Latin American community.', symbol: '1' },
-    { name: 'AsianHorizons', label: 'Asian Horizons Hub', info: 'Connect with diverse Asian cultures.', symbol: '2' },
-    { name: 'AfroConnect', label: 'AfroConnect Hub', info: 'Celebrate African and Afro-diaspora cultures.', symbol: '3' },
-    { name: 'NEWConnect', label: 'NEW Hub', info: 'NEW.', symbol: '4' },
-    // { name: 'Chat', label: 'Try asking anything', info: 'Ask information - powered by AI', symbol: '5' }
+  const resources = [
+    { name: 'LocalCommunity', label: 'Local Community Resources', info: 'Find local community resources.', symbol: '1', image: require('../assets/Community.png') },
+    { name: 'Financial', label: 'Financial Resources', info: 'Get financial assistance and advice.', symbol: '2', image: require('../assets/Financial2.png') },
+    { name: 'Healthcare', label: 'Healthcare Resources', info: 'Access healthcare services and information.', symbol: '3', image: require('../assets/Healthcare2.png') },
+    { name: 'Employment', label: 'Employment Resources', info: 'Find job opportunities and career advice.', symbol: '4', image: require('../assets/Employment2.png') },
+    { name: 'Transportation', label: 'Transportation Resources', info: 'Learn about transportation options.', symbol: '5', image: require('../assets/Transportation2.png') },
+    { name: 'Language', label: 'Language Resources', info: 'Improve your language skills.', symbol: '6', image: require('../assets/Language2.png') },
   ];
 
   return (
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {hubs.map((hub, index) => (
-          <TouchableOpacity key={index} style={styles.hubRow} onPress={() => navigateToHub(hub.name)}>
+        {resources.map((resource, index) => (
+          <TouchableOpacity key={index} style={styles.resourceRow} onPress={() => navigateToResource(resource.name)}>
             <View style={styles.leftContent}>
               <View style={styles.iconContent}>
-                <Text style={styles.hubSymbol}>{hub.symbol}</Text>
+                <Image source={resource.image} style={styles.resourceImage} />
               </View>
               <View style={styles.textContent}>
-                <Text style={styles.hubLabel}>{hub.label}</Text>
-                <Text style={styles.hubInfo}>{hub.info}</Text>
+                <Text style={styles.resourceLabel}>{resource.label}</Text>
+                <Text style={styles.resourceInfo}>{resource.info}</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -69,7 +72,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     alignItems: 'center',
   },
-  hubRow: {
+  resourceRow: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
@@ -88,24 +91,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 12,
+    marginRight: 10,
   },
-  hubSymbol: {
-    color: '#333',
-    fontSize: 18,
-    fontWeight: '600',
+  resourceImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
   },
+ // resourceSymbol: {
+ //   color: '#333',
+ //   fontSize: 18,
+ //   fontWeight: '600',
+ // },
   textContent: {
     flexDirection: 'column',
   },
-  hubLabel: {
+  resourceLabel: {
     fontSize: 16,
     fontWeight: '600',
     color: '#007BFF',
   },
-  hubInfo: {
+  resourceInfo: {
     fontSize: 14,
     fontWeight: '400',
     color: '#555',
