@@ -4,6 +4,7 @@ import { Divider } from 'react-native-elements';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { firebase, db } from '../../firebase';
 import length from 'lodash/size';
+import { useNavigation } from '@react-navigation/native';
 
 // Icons Constant
 const icons = {
@@ -35,6 +36,7 @@ const Post = ({ post }) => {
 };
 
 const PostHeader = ({ post }) => {
+    const navigation = useNavigation();
   return (
     <View style={{
       flexDirection: 'row',
@@ -47,9 +49,11 @@ const PostHeader = ({ post }) => {
           source={{ uri: post.profile_picture }} 
           style={styles.story} 
         />
-        <Text style={styles.usernameText}>
-          {post.username}
-        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', { receiverId: post.owner_uid })}>
+            <Text style={styles.usernameText}>
+            {post.username}
+            </Text>
+        </TouchableOpacity>
       </View>
       <Text style={{ color: 'black', fontWeight: '900' }}>...</Text>
     </View>

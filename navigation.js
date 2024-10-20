@@ -12,6 +12,8 @@ import Hub2 from './screens/Hub2';
 import Hub3 from './screens/Hub3';
 import Hub4 from './screens/Hub4';
 import ChatgptText from './screens/ChatgptText';
+import ChatListScreen from './screens/ChatListScreen'
+import ChatScreen from './screens/ChatScreen'
 
 const Stack = createStackNavigator();
 
@@ -32,6 +34,8 @@ export const SignedInStack = () => (
             <Stack.Screen name='Hub3' component={Hub3} />
             <Stack.Screen name='Hub4' component={Hub4} />
             <Stack.Screen name='ChatgptText' component={ChatgptText} />
+            <Stack.Screen name = 'ChatListScreen' component = {ChatListScreen} />
+            <Stack.Screen name = 'ChatScreen' component = {ChatScreen} />
         </Stack.Navigator>
     </NavigationContainer>
 );

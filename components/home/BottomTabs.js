@@ -8,7 +8,7 @@ const BottomTabs = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const [activeTab, setActiveTab] = useState('Home'); // Setting default active tab to 'Home'
-    const [unreadMessages, setUnreadMessages] = useState(3); // Simulated number of unread messages
+    // const [unreadMessages, setUnreadMessages] = useState(3); // Simulated number of unread messages
 
     // Update the active tab based on the currently focused screen
     useFocusEffect(
@@ -18,7 +18,7 @@ const BottomTabs = () => {
                 setActiveTab('Home');
             } else if (routeName === 'EducationScreen') {
                 setActiveTab('Resources');
-            } else if (routeName === 'ChatScreen') {
+            } else if (routeName === 'ChatListScreen') {
                 setActiveTab('Chat');
             } else if (routeName === 'ProfileScreen') {
                 setActiveTab('Profile');
@@ -37,7 +37,7 @@ const BottomTabs = () => {
                         navigation.navigate('EducationScreen');
                         break;
                     case 'Chat':
-                        navigation.navigate('ChatScreen');
+                        navigation.navigate('ChatListScreen');
                         break;
                     case 'Profile':
                         navigation.navigate('ProfileScreen');
@@ -56,11 +56,11 @@ const BottomTabs = () => {
                 size={30}
                 color={activeTab === icon.name ? '#A2C2E6' : 'black'} // Change color based on active state
             />
-            {icon.name === 'Chat' && unreadMessages > 0 && (
+            {/* {icon.name === 'Chat' && unreadMessages > 0 && (
                 <View style={styles.unreadBadge}>
                     <Text style={styles.unreadBadgeText}>{unreadMessages}</Text>
                 </View>
-            )}
+            )} */}
         </TouchableOpacity>
     );
 
