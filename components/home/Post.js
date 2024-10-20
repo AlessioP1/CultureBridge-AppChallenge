@@ -1,12 +1,6 @@
 import React from 'react';
 import { View, Text, Button, Image, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-<<<<<<< HEAD
-=======
-import { firebase, db } from '../../firebase';
-import length from 'lodash/size';
-import { useNavigation } from '@react-navigation/native';
->>>>>>> 4703a1acc2209cec72d29403bd6df8a01862bc51
 
 const Post = ({ post, onBookmark }) => {
     return (
@@ -24,7 +18,6 @@ const Post = ({ post, onBookmark }) => {
 };
 
 const PostHeader = ({ post }) => {
-<<<<<<< HEAD
     return (
         <View style={{
             flexDirection: 'row',
@@ -44,30 +37,6 @@ const PostHeader = ({ post }) => {
             <Text style={{ color: 'black', fontWeight: '900' }}>...</Text>
         </View>
     );
-=======
-    const navigation = useNavigation();
-  return (
-    <View style={{
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      margin: 5,
-      alignItems: 'center',
-    }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Image 
-          source={{ uri: post.profile_picture }} 
-          style={styles.story} 
-        />
-        <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', { receiverId: post.owner_uid })}>
-            <Text style={styles.usernameText}>
-            {post.username}
-            </Text>
-        </TouchableOpacity>
-      </View>
-      <Text style={{ color: 'black', fontWeight: '900' }}>...</Text>
-    </View>
-  );
->>>>>>> 4703a1acc2209cec72d29403bd6df8a01862bc51
 };
 
 const PostImage = ({ post }) => (

@@ -14,7 +14,6 @@ const BottomTabs = () => {
     useFocusEffect(
         React.useCallback(() => {
             const routeName = route.name; // Get the current screen name
-<<<<<<< HEAD
             switch (routeName) {
                 case 'HomeScreen':
                     setActiveTab('Home');
@@ -23,7 +22,7 @@ const BottomTabs = () => {
                     setActiveTab('Resources');
                     break;
                 case 'ChatgptText':
-                    setActiveTab('logo-ionitron'); 
+                    setActiveTab('logo-ionitron');
                     break;
                 case 'ChatScreen':
                     setActiveTab('Chat');
@@ -34,16 +33,6 @@ const BottomTabs = () => {
                 default:
                     setActiveTab('Home'); // Fallback to 'Home' tab
                     break;
-=======
-            if (routeName === 'HomeScreen') {
-                setActiveTab('Home');
-            } else if (routeName === 'EducationScreen') {
-                setActiveTab('Resources');
-            } else if (routeName === 'ChatListScreen') {
-                setActiveTab('Chat');
-            } else if (routeName === 'ProfileScreen') {
-                setActiveTab('Profile');
->>>>>>> 4703a1acc2209cec72d29403bd6df8a01862bc51
             }
         }, [route])
     );
