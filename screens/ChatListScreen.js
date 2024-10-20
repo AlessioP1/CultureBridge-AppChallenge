@@ -3,7 +3,6 @@ import { SafeAreaView, View, FlatList, Text, StyleSheet, TouchableOpacity, Image
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { db } from '../firebase'; // Make sure to import your firebase setup
 import firebase from 'firebase/compat/app';
-import BottomTabs from '../components/home/BottomTabs';
 
 const ChatListScreen = ({ navigation }) => {
     const [chats, setChats] = useState([]);
@@ -97,7 +96,6 @@ const ChatListScreen = ({ navigation }) => {
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={styles.listContainer}
             />
-            <BottomTabs />
         </SafeAreaView>
     );
 };
