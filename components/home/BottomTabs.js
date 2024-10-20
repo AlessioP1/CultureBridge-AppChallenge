@@ -14,16 +14,26 @@ const BottomTabs = () => {
     useFocusEffect(
         React.useCallback(() => {
             const routeName = route.name; // Get the current screen name
-            if (routeName === 'HomeScreen') {
-                setActiveTab('Home');
-            } else if (routeName === 'EducationScreen') {
-                setActiveTab('Resources');
-            } else if (routeName === 'ChatScreen') {
-                setActiveTab('Chat');
-            } else if (routeName === 'ProfileScreen') {
-                setActiveTab('Profile');
+            switch (routeName) {
+                case 'HomeScreen':
+                    setActiveTab('Home');
+                    break;
+                case 'EducationScreen':
+                    setActiveTab('Resources');
+                    break;
+                case 'ChatgptText':
+                    setActiveTab('logo-ionitron'); 
+                    break;
+                case 'ChatScreen':
+                    setActiveTab('Chat');
+                    break;
+                case 'BookmarkScreen': // Changed from 'ProfileScreen' to 'BookmarkScreen'
+                    setActiveTab('Bookmark');
+                    break;
+                default:
+                    setActiveTab('Home'); // Fallback to 'Home' tab
+                    break;
             }
-            // You can add more screens here if needed
         }, [route])
     );
 
@@ -39,8 +49,11 @@ const BottomTabs = () => {
                     case 'Chat':
                         navigation.navigate('ChatScreen');
                         break;
-                    case 'Profile':
-                        navigation.navigate('ProfileScreen');
+                    case 'Robot': // New button for Robot
+                        navigation.navigate('ChatgptText');
+                        break;
+                    case 'Bookmark': // Changed from 'Profile' to 'Bookmark'
+                        navigation.navigate('BookmarkScreen'); // Changed from 'ProfileScreen' to 'BookmarkScreen'
                         break;
                     case 'Home':
                         navigation.navigate('HomeScreen');
@@ -100,8 +113,7 @@ const styles = StyleSheet.create({
     unreadBadgeText: {
         color: 'white',
         fontWeight: '600',
-        fontSize: 10,  // Adjusted font size to fit smaller badge
-    }
+    },
 });
 
 export default BottomTabs;

@@ -24,7 +24,7 @@ const HomeScreen = ({ navigation }) => {
       AsianHorizons: 'Hub2',
       AfroConnect: 'Hub3',
       NEWConnect: 'Hub4',
-      Chat: 'ChatgptText'
+      // Chat: 'ChatgptText'
     };
     navigation.navigate(hubMap[hubName]);
   };
@@ -34,7 +34,7 @@ const HomeScreen = ({ navigation }) => {
     { name: 'AsianHorizons', label: 'Asian Horizons Hub', info: 'Connect with diverse Asian cultures.', symbol: '2' },
     { name: 'AfroConnect', label: 'AfroConnect Hub', info: 'Celebrate African and Afro-diaspora cultures.', symbol: '3' },
     { name: 'NEWConnect', label: 'NEW Hub', info: 'NEW.', symbol: '4' },
-    { name: 'Chat', label: 'Try asking anything', info: 'Ask information - powered by AI', symbol: '5' }
+    // { name: 'Chat', label: 'Try asking anything', info: 'Ask information - powered by AI', symbol: '5' }
   ];
 
   return (
