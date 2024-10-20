@@ -8,12 +8,13 @@ const BottomTabs = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const [activeTab, setActiveTab] = useState('Home'); // Setting default active tab to 'Home'
-    const [unreadMessages, setUnreadMessages] = useState(3); // Simulated number of unread messages
+    // const [unreadMessages, setUnreadMessages] = useState(3); // Simulated number of unread messages
 
     // Update the active tab based on the currently focused screen
     useFocusEffect(
         React.useCallback(() => {
             const routeName = route.name; // Get the current screen name
+<<<<<<< HEAD
             switch (routeName) {
                 case 'HomeScreen':
                     setActiveTab('Home');
@@ -33,6 +34,16 @@ const BottomTabs = () => {
                 default:
                     setActiveTab('Home'); // Fallback to 'Home' tab
                     break;
+=======
+            if (routeName === 'HomeScreen') {
+                setActiveTab('Home');
+            } else if (routeName === 'EducationScreen') {
+                setActiveTab('Resources');
+            } else if (routeName === 'ChatListScreen') {
+                setActiveTab('Chat');
+            } else if (routeName === 'ProfileScreen') {
+                setActiveTab('Profile');
+>>>>>>> 4703a1acc2209cec72d29403bd6df8a01862bc51
             }
         }, [route])
     );
@@ -47,7 +58,7 @@ const BottomTabs = () => {
                         navigation.navigate('EducationScreen');
                         break;
                     case 'Chat':
-                        navigation.navigate('ChatScreen');
+                        navigation.navigate('ChatListScreen');
                         break;
                     case 'Robot': // New button for Robot
                         navigation.navigate('ChatgptText');
@@ -69,11 +80,11 @@ const BottomTabs = () => {
                 size={30}
                 color={activeTab === icon.name ? '#A2C2E6' : 'black'} // Change color based on active state
             />
-            {icon.name === 'Chat' && unreadMessages > 0 && (
+            {/* {icon.name === 'Chat' && unreadMessages > 0 && (
                 <View style={styles.unreadBadge}>
                     <Text style={styles.unreadBadgeText}>{unreadMessages}</Text>
                 </View>
-            )}
+            )} */}
         </TouchableOpacity>
     );
 

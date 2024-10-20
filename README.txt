@@ -21,6 +21,7 @@ yarn add @react-navigation/stack
 yarn add react-native-gesture-handler
 yarn add valid-url
 yarn add email-validator
+yarn add react-native-gifted-chat
 expo install firebase
 
 
