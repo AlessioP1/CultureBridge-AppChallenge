@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import BookmarkButton from './BookmarkButton';
 
-const Post = ({ post, onBookmark, onDelete }) => (
-    console.log(`Entering Post with id: ${post.id}`),
-    console.log(`Entering post with caption: ${post.caption}`), 
+const Post = ({ post, onDelete }) => (
   <View style={styles.postContainer}>
     <PostHeader post={post} />
     <PostImage post={post} />
@@ -13,7 +12,7 @@ const Post = ({ post, onBookmark, onDelete }) => (
       <CommentsSection commentsCount={post.comments.length} />
       <Comments comments={post.comments} />
     </View>
-    <PostFooter post={post} onBookmark={onBookmark} onDelete={onDelete} />
+    <PostFooter post={post} onDelete={onDelete} />
   </View>
 );
 
@@ -33,12 +32,10 @@ const PostImage = ({ post }) => (
   </View>
 );
 
-const PostFooter = ({ post, onBookmark, onDelete }) => (
+const PostFooter = ({ post, onDelete }) => (
   <View style={styles.footerContainer}>
     <View style={styles.leftFooterIcons}>
-      <TouchableOpacity onPress={() => onBookmark(post.id)}>
-        <Ionicons name="bookmark-outline" size={20} color="black" />
-      </TouchableOpacity>
+      <BookmarkButton post={post} />
       <TouchableOpacity onPress={() => onDelete(post.id)}>
         <Ionicons name="trash-outline" size={20} color="red" />
       </TouchableOpacity>

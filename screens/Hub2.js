@@ -72,7 +72,6 @@ const Hub2 = () => {
             <Post 
               key={post.id} 
               post={post} 
-              onBookmark={(id) => console.log(`Bookmark post with id: ${id}`)} 
               onDelete={handleDeletePost}
             />
 

@@ -1,6 +1,7 @@
 Revamping:
 - posts
     - needed title, text, image, ...
+- create new post page
 - chatgpt
 - hub screen
 - hub page
@@ -8,8 +9,6 @@ Revamping:
 - logo
 
 Features we need to add
-- Saved posts (create a page for that)
-- When you make a post it works & is added to one hub
 - comments?
 - Users can create new hubs??
 

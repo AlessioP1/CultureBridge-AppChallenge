@@ -3,22 +3,43 @@ import { View, Text, Button, FlatList, SafeAreaView, TouchableOpacity, StyleShee
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Post from '../components/home/Post';
+import { db, firebase } from '../firebase';
 
 const BookmarkScreen = () => {
     const navigation = useNavigation();
     const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
+    let currentUserId = firebase.auth().currentUser.uid;
+
 
     useEffect(() => {
         // Fetch bookmarked posts for the currently logged-in user
         const fetchBookmarkedPosts = async () => {
-            // Replace with your actual data fetching logic
-            const response = await fetch('https://api.example.com/bookmarked-posts');
-            const data = await response.json();
-            setBookmarkedPosts(data);
+            try {
+
+                const userSnapshot = await db.collection('users')
+                    .where('owner_uid', '==', currentUserId)
+                    .limit(1).get();
+
+                    if (!userSnapshot.empty) {
+                        const bookmarksRef = userSnapshot.docs[0].ref.collection('bookmarks');
+
+                        bookmarksRef.onSnapshot(bookmarkSnapshot => {
+                            const fetchedPosts = bookmarkSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                            setBookmarkedPosts(fetchedPosts);
+                        });
+                        
+                    } else {
+                        console.error('No user found with the given owner_uid:', currentUserId);
+                        setBookmarkedPosts([]);
+                    }
+
+            } catch (error) {
+                console.error('Error fetching bookmarked posts:', error);
+            }
         };
 
         fetchBookmarkedPosts();
-    }, []);
+    }, [currentUserId]);
 
     return (
         <SafeAreaView style={styles.container}>
