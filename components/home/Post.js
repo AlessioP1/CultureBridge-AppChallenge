@@ -3,6 +3,8 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import PostImage from './PostImage';
 import BookmarkButton from './BookmarkButton';
+import ChatScreen from '../../screens/ChatScreen';
+import { useNavigation } from '@react-navigation/native';
 
 const Post = ({ post, onDelete }) => (
   <View style={styles.postContainer}>
@@ -21,7 +23,9 @@ const PostHeader = ({ post }) => (
   <View style={styles.headerContainer}>
     <View style={styles.headerLeft}>
       <Image source={{ uri: post.profile_picture }} style={styles.story} />
-      <Text style={styles.usernameText}>{post.username}</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', {receiverId: post.owner_uid})}>
+        <Text style={styles.usernameText}>{post.username}</Text>
+      </TouchableOpacity>
     </View>
     <Text style={styles.headerRight}>...</Text>
   </View>
