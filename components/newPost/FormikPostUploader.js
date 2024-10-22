@@ -1,22 +1,14 @@
-import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Image, Button, StyleSheet,TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { Divider } from 'react-native-elements';
-import validUrl from 'valid-url';
-import { db, firebase } from '../../firebase';
-
-
-//const PLACEHOLDER_IMG = 'https://www.brownweinraub.com/wp-content/uploads/2017/09/placeholder.jpg';
-
-const uploadPostSchema = Yup.object().shape({
-    imageUrl: Yup.string().url('Image URL must be a valid URL').required('A URL is required'),
-    caption: Yup.string().max(2200, 'Caption has reached the character limit'),
-});
+import * as ImagePicker from 'expo-image-picker';
+import { db, auth, storage, firebase } from '../../firebase'; // Import Firebase services
 
 const FormikPostUploader = ({ navigation, hubId, resourceId }) => {
-    const [thumbnailUrl, setThumbnailUrl] = useState(null);
+    
     const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
 
     // Function to get username and profile picture from Firestore
     function getUsername(uid) {
@@ -46,7 +38,7 @@ const FormikPostUploader = ({ navigation, hubId, resourceId }) => {
 
     // Effect to listen for authentication state changes
     useEffect(() => {
-        const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
                 console.log("User logged in:", user.uid);
                 getUsername(user.uid); // Pass the user ID to fetch additional user info from Firestore
@@ -59,102 +51,141 @@ const FormikPostUploader = ({ navigation, hubId, resourceId }) => {
         return () => unsubscribe();
     }, []);
 
-    const uploadPostToFirebase = (imageUrl, caption) => {
+    const selectImage = async () => {
+      console.log("Selecting image...");
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+        if (!result.canceled) {
+          const source = {
+            uri: result.assets[0].uri,
+            name: result.assets[0].fileName || `image_${Date.now()}`,
+            type: result.assets[0].type,
+          };
+          setSelectedImage(source);
+        } else {
+          console.error('Image selection was canceled');
+        }
+      };
+
+    const uploadFileToFirebaseStorage = async (file) => {
+        const response = await fetch(file.uri);
+        const blob = await response.blob();
+        //const storageRef = storage.ref();
+        const storageRef = storage.ref();
+        console.log("storageRef: ",storageRef );
+        const fileRef = storageRef.child(`images/${file.name}`);
+        await fileRef.put(blob);
+        const fileUrl = await fileRef.getDownloadURL();
+        console.log("url: ",fileUrl );
+        return fileUrl;
+      };
+
+    const uploadPostToFirebase = async (file, caption) => {
         if (!currentLoggedInUser) {
             console.error("User data is not loaded yet.");
             return;
         }
-        console.log("post to be added: ", resourceId, "|",  hubId, "|", imageUrl, "|", caption);        
-        const unsubscribe = db.collection('resources')
-            .doc(resourceId)
-            .collection('hubs')
-            .doc(hubId)
-            .collection('posts')
-            .add({
-                imageUrl: imageUrl,
+        let fileUrl = null;
+            if (file) {
+              try {
+                fileUrl = await uploadFileToFirebaseStorage(file);
+                console.log("File uploaded to Firebase Storage:", fileUrl);
+              } catch (error) {
+                console.error("Error uploading file to Firebase Storage:", error);
+              }
+            }
+        try {
+            
+            console.log("post to be added: ", resourceId, "|",  hubId, "|", fileUrl, "|", caption);        
+
+            await db.collection('resources')
+                .doc(resourceId)
+                .collection('hubs')
+                .doc(hubId)
+                .collection('posts')
+                .add({
+                imageUrl: fileUrl,
                 username: currentLoggedInUser.username, // Ensure username exists
                 profile_picture: currentLoggedInUser.profilePicture,
-                owner_uid: firebase.auth().currentUser.uid,
-                owner_email: firebase.auth().currentUser.email,
+                owner_uid: auth.currentUser.uid,
+                owner_email: auth.currentUser.email,
                 caption: caption,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 likes_by_users: [],
                 comments: [],
-            })
-            .then(() => navigation.goBack())
-            .catch((error) => console.error("Error posting to Firebase: ", error));
-
-        return unsubscribe;
-    }
+                });
+            navigation.goBack();
+        } catch (error) {
+            console.error("Error posting to Firebase:", error);
+        }
+  };
 
     return (
-        <Formik
-            initialValues={{ caption: 'Test123', imageUrl: 'https://example.com/' }}
+    <Formik
+            initialValues={{ caption: '' }}
             onSubmit={(values) => {
-                uploadPostToFirebase(values.imageUrl, values.caption);
+                uploadPostToFirebase(selectedImage, values.caption);
             }}
-            validationSchema={uploadPostSchema}
-            validateOnMount={true}
+            validationSchema={Yup.object().shape({
+                caption: Yup.string().max(2200, 'Caption has reached the character limit.'),
+            })}
         >
-            {({ handleBlur, handleChange, handleSubmit, values, errors, touched, isValid }) => (
-                <>
-                    <View 
-                        style={{
-                            margin: 20,
-                            justifyContent: 'space-between',
-                            flexDirection: 'row',
-                        }}
-                    >
-                        <Image 
-                            source={{ uri: validUrl.isUri(thumbnailUrl) ? thumbnailUrl : null }} 
-                            style={{ width: 100, height: 100 }} 
-                        />
-                        <View style={{ flex: 1, marginLeft: 12 }}>
-                            <TextInput 
-                                style={{ color: 'black', fontSize: 20, textAlign: 'left', }}
-                                placeholder='Write a caption...' 
-                                placeholderTextColor='gray'
-                                multiline={true}
-                                onChangeText={handleChange('caption')}
-                                onBlur={handleBlur('caption')}
-                                value={values.caption}
-                            />
-                        </View>
-                    </View>
-                    <Divider width={0.2} orientation='vertical' />
-                    <TextInput 
-                        onChange={e => setThumbnailUrl(e.nativeEvent.text)}
-                        style={{ color: 'black', fontSize: 18 }}
-                        placeholder='Enter Image Url (optional)' 
-                        placeholderTextColor='gray'
-                        onChangeText={handleChange('imageUrl')}
-                        onBlur={handleBlur('imageUrl')}
-                        value={values.imageUrl}
-                    />
-                    {touched.imageUrl && errors.imageUrl && (
-                        <Text style={{ fontSize: 10, color: 'red' }}>
-                            {errors.imageUrl}
-                        </Text>
-                    )}
-
-                    <TouchableOpacity 
-                        onPress={handleSubmit} 
-                        style={{
-                            padding: 15,
-                            marginTop: 30, // Increased margin to lower the button
-                            alignItems: 'center',
-                        }}
-                        disabled={!isValid}
-                    >
-                        <Text style={{ color: isValid ? 'green' : 'lightgray', fontSize: 18 }}>
-                            Press here to upload Post
-                        </Text>
-                    </TouchableOpacity>
-                </>
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+          <View>
+            <TextInput
+              placeholder="Write a caption..."
+              onChangeText={handleChange('caption')}
+              onBlur={handleBlur('caption')}
+              value={values.caption}
+              multiline={true}
+              style={styles.inputField}
+            />
+            {touched.caption && errors.caption && <Text style={styles.errorText}>{errors.caption}</Text>}
+            <TouchableOpacity onPress={selectImage} style={styles.selectImageButton}>
+                <Text style={styles.selectImageText}>Select Image</Text>
+            </TouchableOpacity>
+            {selectedImage && (
+                <Image source={{ uri: selectedImage.uri }} style={styles.selectedImage} />
             )}
-        </Formik>
+            <Button onPress={handleSubmit} title="Submit post" />
+          </View>
+        )}
+      </Formik>
     );
 };
+
+const styles = StyleSheet.create({
+    inputField: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        padding: 10,
+        marginBottom: 10,
+        borderRadius: 5,
+      },
+      errorText: {
+        color: 'red',
+        marginBottom: 10,
+      },
+      selectImageButton: {
+        backgroundColor: '#007BFF',
+        padding: 10,
+        borderRadius: 5,
+        marginBottom: 10,
+      },
+      selectImageText: {
+        color: '#fff',
+        textAlign: 'center',
+      },
+      selectedImage: {
+        width: 100,
+        height: 100,
+        marginBottom: 10,
+      },
+  });
 
 export default FormikPostUploader;
 

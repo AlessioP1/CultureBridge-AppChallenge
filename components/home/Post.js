@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import PostImage from './PostImage';
 import BookmarkButton from './BookmarkButton';
 
 const Post = ({ post, onDelete }) => (
@@ -26,11 +27,6 @@ const PostHeader = ({ post }) => (
   </View>
 );
 
-const PostImage = ({ post }) => (
-  <View style={styles.imageContainer}>
-    <Image source={{ uri: post.imageUrl }} style={styles.image} />
-  </View>
-);
 
 const PostFooter = ({ post, onDelete }) => (
   <View style={styles.footerContainer}>

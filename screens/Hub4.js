@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation , useRoute} from '@react-navigation/native';
 import Post from '../components/home/Post';
-import { db } from '../firebase';
+import { db, storage } from '../firebase';
 
 const Hub4 = () => {
   const route = useRoute();
@@ -11,8 +11,14 @@ const Hub4 = () => {
   const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
   const hubId = 'Hub4';
-  console.log(`Entering ${hubId} with resource ID: ${resourceId}`);
+  const HubName= 'Pacific';
+  // Latino
+  // Asian Horizons
+  // AfroConnect
+  // Pacific
 
+  console.log(`Entering ${hubId} with resource ID: ${resourceId}`);
+  
   useEffect(() => {
     const unsubscribe = db.collection('resources')
     .doc(resourceId)
@@ -29,10 +35,24 @@ const Hub4 = () => {
 
   const handleDeletePost = async (postId) => {
     try {
-      await db.collection('posts').doc(postId).delete();
-      console.log(`Post with ID ${postId} deleted successfully`);
-    } catch (error) {
-      console.error('Error deleting post: ', error);
+        console.log(`deleting Post with id: ${postId}`);
+
+        // Retrieve the post document to get the image URL
+        const postDoc = await db.collection('resources').doc(resourceId).collection('hubs').doc(hubId).collection('posts').doc(postId).get();
+        const postData = postDoc.data();
+
+        if (postData && postData.imageUrl) {
+          // Delete the image from Firebase Storage
+          const imageRef = storage.refFromURL(postData.imageUrl);
+          await imageRef.delete();
+          console.log(`Image deleted successfully from Firebase Storage: ${postData.imageUrl}`);
+        }
+
+        // Delete the post document from Firestore
+        await db.collection('resources').doc(resourceId).collection('hubs').doc(hubId).collection('posts').doc(postId).delete();
+        console.log(`Post with ID ${postId} deleted successfully`);
+      } catch (error) {
+        console.error('Error deleting post: ', error);
     }
   };
 
@@ -43,12 +63,12 @@ const Hub4 = () => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back" size={30} color="black" />
           </TouchableOpacity>
-          <Text style={styles.headerText}>Pacific</Text>
+          <Text style={styles.headerText}>{HubName}</Text>
           <View style={styles.addPostContainer}>
             <Text style={styles.addPostText}>Add Post</Text>
             <TouchableOpacity
               style={styles.addPostButton}
-              onPress={() => navigation.navigate('NewPostScreen', { hubId, resourceId  })}
+              onPress={() => navigation.navigate('NewPostScreen', { hubId, resourceId })}
             >
               <Ionicons name="add-circle" size={30} color="black" />
             </TouchableOpacity>

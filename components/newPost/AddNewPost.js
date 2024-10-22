@@ -22,7 +22,14 @@ const Header = ({ navigation }) => (
         </TouchableOpacity>
         <Text style={styles.headerText}>Add New Post for Hub</Text>
         <Text></Text>
+        <Image
+        source={require('../../assets/LatinoHub.jpg')}
+        style={styles.banner}
+        resizeMode="cover"
+        />
+     
     </SafeAreaView>
+    
 );
 
 const styles = StyleSheet.create({
@@ -42,6 +49,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginRight: 25,
     },
+    banner: {
+        width: '100%',
+        height: 100,
+        marginBottom: 10,
+      },
 });
 
 export default AddNewPost;
