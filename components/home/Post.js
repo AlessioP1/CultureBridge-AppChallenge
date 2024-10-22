@@ -19,17 +19,21 @@ const Post = ({ post, onDelete }) => (
   </View>
 );
 
-const PostHeader = ({ post }) => (
-  <View style={styles.headerContainer}>
-    <View style={styles.headerLeft}>
-      <Image source={{ uri: post.profile_picture }} style={styles.story} />
-      <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', {receiverId: post.owner_uid})}>
-        <Text style={styles.usernameText}>{post.username}</Text>
-      </TouchableOpacity>
-    </View>
-    <Text style={styles.headerRight}>...</Text>
-  </View>
-);
+const PostHeader = ({ post }) => {
+    const navigation = useNavigation();
+
+    return (
+        <View style={styles.headerContainer}>
+            <View style={styles.headerLeft}>
+            <Image source={{ uri: post.profile_picture }} style={styles.story} />
+            <TouchableOpacity onPress={() => navigation.navigate('ChatScreen', {receiverId: post.owner_uid})}>
+                <Text style={styles.usernameText}>{post.username}</Text>
+            </TouchableOpacity>
+            </View>
+            <Text style={styles.headerRight}>...</Text>
+        </View>
+    );
+};
 
 
 const PostFooter = ({ post, onDelete }) => (
