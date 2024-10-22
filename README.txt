@@ -28,23 +28,34 @@ yarn add react-native-gifted-chat
 expo install firebase
 
 
-4:58:40
+=========================
+When facing the error:
+ExpoMetroConfig.loadAsync is not a function
+TypeError: ExpoMetroConfig.loadAsync is not a function
+    at runMetroDevServerAsync (C:\Users\Public\Documents\CultureBridge-AppChallenge\node_modules\@expo\dev-server\src\MetroDevServer.ts:86:45)
+    at startDevServerAsync (C:\Users\Public\Documents\CultureBridge-AppChallenge\node_modules\xdl\src\start\startDevServerAsync.ts:75:77)
+    at startAsync (C:\Users\Public\Documents\CultureBridge-AppChallenge\node_modules\xdl\src\start\startAsync.ts:84:41)
+
+install: 
+
+npm install @expo/config@8.1.1
+npm install @expo/metro-config@0.10.0
+
+=======================
 
 to start daemon: npx expo start
 
+=======================
 chatgpt integration: 
 
-npm install axios                      
+npm install axios         
 
+=======================
+Image selection:
 
+npm install -g react-native-image-picker     
+npx expo install expo-image-picker 
+npx expo install firebase     
 
-Audio: 
+=======================
 
-yarn add expo-av                       
-yarn add expo-file-system
-npm i -g @nestjs/cli
-yarn add @react-native-voice/voice
-yarn add @google-cloud/text-to-speech
-yarn add openai
-yarn add dotenv
-yarn add cors

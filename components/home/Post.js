@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import PostImage from './PostImage';
 
 const Post = ({ post, onBookmark, onDelete }) => (
-    console.log(`Entering Post with id: ${post.id}`),
-    console.log(`Entering post with caption: ${post.caption}`), 
+    //console.log(`Entering Post with id: ${post.id}, caption: ${post.caption}`),
+    
   <View style={styles.postContainer}>
     <PostHeader post={post} />
     <PostImage post={post} />
@@ -27,11 +28,6 @@ const PostHeader = ({ post }) => (
   </View>
 );
 
-const PostImage = ({ post }) => (
-  <View style={styles.imageContainer}>
-    <Image source={{ uri: post.imageUrl }} style={styles.image} />
-  </View>
-);
 
 const PostFooter = ({ post, onBookmark, onDelete }) => (
   <View style={styles.footerContainer}>
