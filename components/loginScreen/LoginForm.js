@@ -1,6 +1,5 @@
-import { View, Text, TextInput, Button, StyleSheet, Pressable, Alert } from 'react-native';
-import React, { useState } from 'react';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Validator from 'email-validator';
@@ -74,15 +73,20 @@ const LoginForm = ({navigation}) => {
                             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
                         </View>
                         
-                        {/* Login button */}
-                        <Pressable style={styles.button(isValid)} onPress={handleSubmit} disabled={!isValid}>
+                        {/* Login button with TouchableOpacity for fade animation */}
+                        <TouchableOpacity 
+                            style={styles.button(isValid)} 
+                            onPress={handleSubmit} 
+                            activeOpacity={0.6} // Add fade-in effect on press
+                            disabled={!isValid}
+                        >
                             <Text style={styles.buttonText}>Log In</Text>
-                        </Pressable>
+                        </TouchableOpacity>
 
                         <View style={styles.signupContainer}>
-                            <Text>Don't have an account?</Text>
+                            <Text style ={{color: '#C4A484'}}>Don't have an account?</Text>
                             <TouchableOpacity onPress={() => navigation.push('SignupScreen')}>
-                                <Text style={{color: '#0096F6', fontWeight: 'bold'}}> Sign up</Text>
+                                <Text style={{color: '#E9967A', fontWeight: 'bold'}}> Sign up</Text>
                             </TouchableOpacity>    
                         </View>
                     </>
@@ -98,36 +102,40 @@ const styles = StyleSheet.create({
         padding: 12,
         marginBottom: 10,
         borderWidth: 1,
-        width: 350, // Fix the width of the input fields
-        backgroundColor: '#FAFAFA', // Change the background color of the input fields
+        width: 350, 
+        backgroundColor: '#FAFAFA', 
         marginLeft: 75,
     },
     wrapper: {
-        alignItems: 'center', // Horizontally center the elements
-        marginTop: 50, // Adjust the top margin to place it under the logo
+        alignItems: 'center', 
+        marginTop: 20,  
     },
     textInput: {
-        width: '100%', // Ensure the text input takes up the full width of the input field
+        width: '100%', 
     },
-    // Forgot Password styling
     forgotPasswordContainer: {
         alignSelf: 'flex-end',
-        marginRight: 0, // Adjust right margin to position "Forgot Password?" text
+        marginRight: 0, 
         marginBottom: 20,
     },
     forgotPasswordText: {
-        color: '#6BB0F5',
+        color: '#C4A484',
         fontSize: 14,
     },
-    // Button styling
     button: (isValid) => ({
-        backgroundColor: isValid ? '#0096F6' : '#9ACAF7',
+        backgroundColor: isValid ? '#D6C69D' : '#9C9B95',
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: 42,
         borderRadius: 4,
-        width: 350, // Make the login button wider
+        width: 350, 
         marginLeft: 75,
+        // Add a slight shadow to give a 3D effect
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5, // Android shadow
     }),
     buttonText: {
         color: 'white',
@@ -138,8 +146,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         justifyContent: 'center',
-        marginTop: 50,
+        marginTop: 30,  
     },
 });
 
 export default LoginForm;
+

@@ -32,12 +32,12 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const resources = [
-    { name: 'LocalCommunity', label: 'Local Community Resources', info: 'Find local community resources.', symbol: '1', image: require('../assets/Community.png') },
+    { name: 'LocalCommunity', label: 'Local Community', info: 'Find local community resources.', symbol: '1', image: require('../assets/Community.png') },
     { name: 'Financial', label: 'Financial Resources', info: 'Get financial assistance and advice.', symbol: '2', image: require('../assets/Financial2.png') },
     { name: 'Healthcare', label: 'Healthcare Resources', info: 'Access healthcare services and information.', symbol: '3', image: require('../assets/Healthcare2.png') },
-    { name: 'Employment', label: 'Employment Resources', info: 'Find job opportunities and career advice.', symbol: '4', image: require('../assets/Employment2.png') },
-    { name: 'Transportation', label: 'Transportation Resources', info: 'Learn about transportation options.', symbol: '5', image: require('../assets/Transportation2.png') },
-    { name: 'Language', label: 'Language Resources', info: 'Improve your language skills.', symbol: '6', image: require('../assets/Language2.png') },
+    { name: 'Employment', label: 'Employment', info: 'Find job opportunities and career advice.', symbol: '4', image: require('../assets/Employment2.png') },
+    { name: 'Transportation', label: 'Transportation', info: 'Learn about transportation options.', symbol: '5', image: require('../assets/Transportation2.png') },
+    { name: 'Language', label: 'Language', info: 'Improve your language skills.', symbol: '6', image: require('../assets/Language2.png') },
   ];
 
   return (

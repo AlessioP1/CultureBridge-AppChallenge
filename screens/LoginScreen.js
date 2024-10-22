@@ -6,7 +6,7 @@ const LoginScreen = ({ navigation }) => (
     <View style={styles.container}>
         <View style={styles.logoContainer}>
             <Image 
-                source={require('../assets/CultureBridgeLogo2.jpg')} // Correct path
+                source={require('../assets/BRIDGE3.png')} // Correct path
                 style={styles.logo}
             />
         </View>
@@ -26,13 +26,13 @@ const styles = StyleSheet.create({
     
     logoContainer: {
         alignItems: 'center',
-        marginTop: 60,
+        marginTop: 10,
         justifyContent: 'center',
         
     },
     logo: {
-        width: 150,   // Adjust width to fit your design
-        height: 200,  // Adjust height to fit your design
+        width: 250,   // Adjust width to fit your design
+        height: 250,  // Adjust height to fit your design
         resizeMode: 'contain', // Makes sure the image scales properly
     },
     formContainer: {

@@ -11,7 +11,7 @@ const Hub1 = () => {
   const navigation = useNavigation();
   const [posts, setPosts] = useState([]);
   const hubId = 'Hub1';
-  const HubName= 'Latino';
+  const HubName= 'Latin America';
   // Latino
   // Asian Horizons
   // AfroConnect
@@ -76,11 +76,6 @@ const Hub1 = () => {
         </View>
       </SafeAreaView>
 
-      <Image
-        source={require('../assets/LatinoHub.jpg')}
-        style={styles.banner}
-        resizeMode="cover"
-      />
       <SafeAreaView>
         <Text style={styles.headerText}>All Posts</Text>
       </SafeAreaView>

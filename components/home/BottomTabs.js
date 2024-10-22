@@ -67,7 +67,7 @@ const BottomTabs = () => {
             <Ionicons
                 name={activeTab === icon.name ? icon.active : icon.inactive}
                 size={30}
-                color={activeTab === icon.name ? '#A2C2E6' : 'black'} // Change color based on active state
+                color={activeTab === icon.name ? '#D6C69D' : 'black'} // Change color based on active state
             />
             {/* {icon.name === 'Chat' && unreadMessages > 0 && (
                 <View style={styles.unreadBadge}>

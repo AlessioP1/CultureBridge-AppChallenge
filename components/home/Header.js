@@ -17,15 +17,13 @@ const handleSignout = async () => {
   const Header = ({ navigation }) => {
     return (
       <View style={styles.container}>
-        {/* Logo and "ulture Bridge" text on the left side */}
         <View style={styles.logoContainer}>
           <TouchableOpacity onPress={handleSignout}>
             <Image 
               style={styles.logo} 
-              source={require('../../assets/CultureBridgeLogo2.jpg')} 
+              source={require('../../assets/BRIDGE.png')} 
             />
           </TouchableOpacity>
-          <Text style={styles.logoText}>ulture Bridge</Text>
         </View>
   
         {/* Icons on the right side */}
@@ -74,5 +72,3 @@ const handleSignout = async () => {
   });
   
   export default Header;
-
-

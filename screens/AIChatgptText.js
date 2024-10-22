@@ -43,7 +43,7 @@ const AIChatgptText = () => {
 
       {/* Banner Image */}
       <Image
-        source={require('../assets/chatgpt.png')} // Adjust the path based on your folder structure
+        source={require('../assets/chatgptscreen.jpg')} // Adjust the path based on your folder structure
         style={styles.banner}
         resizeMode="cover" // Ensures the image covers the width while keeping the aspect ratio
       />

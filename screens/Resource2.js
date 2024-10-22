@@ -17,7 +17,7 @@ const Resource2 = ({ navigation }) => {
   const chatRole = 'You are a financial advisor';
   const imageLocation ='../assets/Financial2.png';
   const headerTextForPage = 'Financial Resources';
-  const askMeAnything = 'Ask me anything - I am your financial assistant. Information may be a bit outdated.';
+  const askMeAnything = 'Ask Anything!';
 
   // reminder: 
   // LocalCommunity: 'Resource1',
@@ -40,7 +40,7 @@ const Resource2 = ({ navigation }) => {
       Latino: 'Hub1',
       AsianHorizons: 'Hub2',
       AfroConnect: 'Hub3',
-      Pacific: 'Hub4',
+      Europe: 'Hub4',
       // Chat: 'ChatgptText'
     };
     navigation.navigate(hubMap[hubName], { resourceId });
@@ -74,11 +74,10 @@ const Resource2 = ({ navigation }) => {
   // end of section for chatbot !!!
 
   const hubs = [
-    { name: 'Latino', label: 'Latino Hub', info: 'Explore the Latin American community.', symbol: '1' },
-    { name: 'AsianHorizons', label: 'Asian Horizons Hub', info: 'Connect with diverse Asian cultures.', symbol: '2' },
-    { name: 'AfroConnect', label: 'AfroConnect Hub', info: 'Celebrate African and Afro-diaspora cultures.', symbol: '3' },
-    { name: 'Pacific', label: 'Pacific Hub', info: 'Pacific Region.', symbol: '4' },
-    // { name: 'Chat', label: 'Try asking anything', info: 'Ask information - powered by AI', symbol: '5' }
+    { name: 'Latino', label: 'Latin American Hub', info: 'Explore the Latin American community.', symbol: '1' },
+    { name: 'AsianHorizons', label: 'AAPI Hub', info: 'Connect with diverse Asian cultures.', symbol: '2' },
+    { name: 'AfroConnect', label: 'African American Hub', info: 'Celebrate African and Afro-diaspora cultures.', symbol: '3' },
+    { name: 'Europe', label: 'Europe Hub', info: 'Connect with Western and Eastern Europeans.', symbol: '4' },
   ];
 
   return (
@@ -95,138 +94,54 @@ const Resource2 = ({ navigation }) => {
             </View>
             <View style={styles.textContent}>
               <Text style={styles.sectionHeader}>{headerTextForPage}</Text>
-              <Text style={styles.headerText2}>Chat with our AI expert or</Text>
-              <Text style={styles.headerText2}>Click for Help in ANY Hub </Text>
             </View>
       </View>
 
-           
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+  {/* Hub Content */}
+  <Text style={styles.sectionHeader}>Need Help? Contact Hub Below:</Text>
+  {hubs.map((hub, index) => (
+    <TouchableOpacity key={index} style={styles.hubRow} onPress={() => navigateToHub(hub.name, resourceId)}>
+      <View style={styles.leftContent}>
+        <View style={styles.iconContent}>
+          <Text style={styles.hubSymbol}>{hub.symbol}</Text>
+        </View>
+        <View style={styles.textContent}>
+          <Text style={styles.hubLabel}>{hub.label}</Text>
+          <Text style={styles.hubInfo}>{hub.info}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  ))}
 
-{/* Financial Education Resources */}
-<View style={styles.sectionContainer}>
-                <Text style={styles.sectionHeader}>Financial Education Resources</Text>
-                <Dropdown 
-                    title="Building Credit Score"
-                    icon={require('../assets/creditScore.jpg')} // Adjust the icon path
-                    content={
-                        <View>
-                            <Text style={styles.bulletPoint}>• Pay bills on time</Text>
-                            <Text style={styles.bulletPoint}>• Keep credit card balances low (ideally under 30% of your credit limit)</Text>
-                            <Text style={styles.bulletPoint}>• Monitor your credit report for errors at least once a year</Text>
-                            <Text style={styles.bulletPoint}>• Limit new credit inquiries</Text>
-                        </View>
-                    }
-                />
-                <Dropdown 
-                    title="How to Get A Credit Card"
-                    icon={require('../assets/creditCard.jpg')} // Adjust the icon path
-                    content={
-                        <View>
-                            <Text style={styles.bulletPoint}>• Research various credit card options</Text>
-                            <Text style={styles.bulletPoint}>• Compare interest rates and fees</Text>
-                            <Text style={styles.bulletPoint}>• Start with a secured credit card if new to credit</Text>
-                            <Text style={styles.bulletPoint}>• Read terms and conditions carefully before applying</Text>
-                        </View>
-                    }
-                />
-                <Dropdown 
-                    title="Budgeting Basics"
-                    icon={require('../assets/budget.png')} // Adjust the icon path
-                    content={
-                        <View>
-                            <Text style={styles.bulletPoint}>• Track your income and expenses</Text>
-                            <Text style={styles.bulletPoint}>• Use the 50/30/20 rule: 50% needs, 30% wants, 20% savings/debt repayment</Text>
-                            <Text style={styles.bulletPoint}>• Regularly review and adjust your budget</Text>
-                            <Text style={styles.bulletPoint}>• Use budgeting apps or spreadsheets for tracking</Text>
-                        </View>
-                    }
-                />
-                <Dropdown 
-                    title="Understanding Loans"
-                    icon={require('../assets/loan.jpg')} // Adjust the icon path
-                    content={
-                        <View>
-                            <Text style={styles.bulletPoint}>• Understand terms, interest rates, and repayment schedules</Text>
-                            <Text style={styles.bulletPoint}>• Assess your ability to repay before taking out a loan</Text>
-                            <Text style={styles.bulletPoint}>• Avoid high-interest loans whenever possible</Text>
-                            <Text style={styles.bulletPoint}>• Consider consolidating loans for better rates</Text>
-                        </View>
-                    }
-                />
-                <Dropdown 
-                    title="Investing 101"
-                    icon={require('../assets/investing.png')} // Adjust the icon path
-                    content={
-                        <View>
-                            <Text style={styles.bulletPoint}>• Learn about stocks, bonds, and mutual funds</Text>
-                            <Text style={styles.bulletPoint}>• Diversify your portfolio to mitigate risk</Text>
-                            <Text style={styles.bulletPoint}>• Start with low-cost index funds for beginners</Text>
-                            <Text style={styles.bulletPoint}>• Understand the basics of market trends and analysis</Text>
-                        </View>
-                    }
-                />
-                <Dropdown 
-                    title="Understanding Taxes"
-                    icon={require('../assets/taxes.jpg')} // Adjust the icon path
-                    content={
-                        <View>
-                            <Text style={styles.bulletPoint}>• Familiarize yourself with tax brackets and deductions</Text>
-                            <Text style={styles.bulletPoint}>• Keep accurate records of your income and expenses</Text>
-                            <Text style={styles.bulletPoint}>• Consider using tax preparation software or a tax professional</Text>
-                            <Text style={styles.bulletPoint}>• Stay informed about tax law changes annually</Text>
-                        </View>
-                    }
-                />
-            </View>
-
-
-
-        {/* AI Chat Window */}
-            {/* Banner Image */}
-            <Image
-              source={require('../assets/chatgpt.png')} // Adjust the path based on your folder structure
-              style={styles.banner}
-              resizeMode="cover" // Ensures the image covers the width while keeping the aspect ratio
-            />
-            
-            {/* Hub Content */}
-            <View style={styles.content}>
-              <Text style={styles.sectionHeader}>{askMeAnything}</Text>
-            </View>
-            <View style={styles.inputArea}>
-              <TextInput
-                style={styles.input}
-                value={message}
-                onChangeText={(text) => setMessage(text)}
-                placeholder="Type a message..."
-              />
-              <Button title="Send" onPress={sendChatMessage} />
-            </View>
-            <View style={styles.chatArea}>
-              {conversation.map((msg, index) => (
-                <Text key={index} style={msg.role === 'user' ? styles.userMessage : styles.botMessage}>
-                  {msg.content}
-                </Text>
-              ))}
-            </View>
-            <Text style={styles.sectionHeader}>NEED HELP?, contact ANY Affinity group below:</Text>
-            {hubs.map((hub, index) => (
-          <TouchableOpacity key={index} style={styles.hubRow} onPress={() => navigateToHub(hub.name, resourceId)}>
-            <View style={styles.leftContent}>
-              <View style={styles.iconContent}>
-                <Text style={styles.hubSymbol}>{hub.symbol}</Text>
-              </View>
-              <View style={styles.textContent}>
-                <Text style={styles.hubLabel}>{hub.label}</Text>
-                <Text style={styles.hubInfo}>{hub.info}</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        ))}
-            
-    
-      </ScrollView>
+  {/* AI Chat Window */}
+  {/* Banner Image */}
+  <Image
+    source={require('../assets/chatgptscreen.jpg')} // Adjust the path based on your folder structure
+    style={styles.banner}
+    resizeMode="cover" // Ensures the image covers the width while keeping the aspect ratio
+  />
+  
+  <View style={styles.content}>
+    <Text style={styles.sectionHeader}>{askMeAnything}</Text>
+  </View>
+  <View style={styles.inputArea}>
+    <TextInput
+      style={styles.input}
+      value={message}
+      onChangeText={(text) => setMessage(text)}
+      placeholder="Type a message..."
+    />
+    <Button title="Send" onPress={sendChatMessage} />
+  </View>
+  <View style={styles.chatArea}>
+    {conversation.map((msg, index) => (
+      <Text key={index} style={msg.role === 'user' ? styles.userMessage : styles.botMessage}>
+        {msg.content}
+      </Text>
+    ))}
+  </View>
+</ScrollView>
       <BottomTabs icons={bottomTabIcons} navigation={navigation} isFocused={isFocused} />
     </SafeAreaView>
   );
@@ -234,9 +149,8 @@ const Resource2 = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   banner: {
-    width: '100%', // Full width of the screen
-    height: 100, // Adjust the height as needed for the banner
-    marginBottom: 5, // Space between the banner and the rest of the content
+    width: '100%',
+    height: 200,
   },
   container: {
     backgroundColor: 'white',
@@ -251,29 +165,35 @@ const styles = StyleSheet.create({
   },
   chatArea: {
     padding: 16,
-    backgroundColor: '#f0f0f0',
+    // Change backgroundColor to white or remove it
+    backgroundColor: 'white', // or 'transparent'
     minHeight: 200,
   },
   inputArea: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#fff',
+    // Set the background color to white or remove it
+    backgroundColor: 'white', // or 'transparent'
   },
   input: {
     flex: 1,
-    marginRight: 16,
-    padding: 8,
-    borderColor: '#ccc',
     borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    padding: 10,
   },
   userMessage: {
-    textAlign: 'right',
-    color: 'blue',
+    backgroundColor: '#e1ffc7',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 5,
   },
   botMessage: {
-    textAlign: 'left',
-    color: 'green',
+    backgroundColor: '#d0d0d0',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 5,
   },
   scrollContainer: {
     paddingVertical: 20,
@@ -362,3 +282,5 @@ bulletPoint: {
 });
 
 export default Resource2;
+
+

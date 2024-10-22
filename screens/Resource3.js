@@ -17,7 +17,7 @@ const Resource3 = ({ navigation }) => {
   const chatRole = 'You are a healthcare advisor';
   const imageLocation ='../assets/Healthcare2.png';
   const headerTextForPage = 'Healthcare Resources';
-  const askMeAnything = 'Ask me anything - I am your healthcare assistant. Information may be a bit outdated.';
+  const askMeAnything = 'Ask Anything!';
 
   // reminder: 
   // LocalCommunity: 'Resource1',
@@ -40,7 +40,7 @@ const Resource3 = ({ navigation }) => {
       Latino: 'Hub1',
       AsianHorizons: 'Hub2',
       AfroConnect: 'Hub3',
-      Pacific: 'Hub4',
+      Europe: 'Hub4',
       // Chat: 'ChatgptText'
     };
     navigation.navigate(hubMap[hubName], { resourceId });
@@ -74,106 +74,32 @@ const Resource3 = ({ navigation }) => {
   // end of section for chatbot !!!
 
   const hubs = [
-    { name: 'Latino', label: 'Latino Hub', info: 'Explore the Latin American community.', symbol: '1' },
-    { name: 'AsianHorizons', label: 'Asian Horizons Hub', info: 'Connect with diverse Asian cultures.', symbol: '2' },
-    { name: 'AfroConnect', label: 'AfroConnect Hub', info: 'Celebrate African and Afro-diaspora cultures.', symbol: '3' },
-    { name: 'Pacific', label: 'Pacific Hub', info: 'Pacific Region.', symbol: '4' },
-    // { name: 'Chat', label: 'Try asking anything', info: 'Ask information - powered by AI', symbol: '5' }
+    { name: 'Latino', label: 'Latin American Hub', info: 'Explore the Latin American community.', symbol: '1' },
+    { name: 'AsianHorizons', label: 'AAPI Hub', info: 'Connect with diverse Asian cultures.', symbol: '2' },
+    { name: 'AfroConnect', label: 'African American Hub', info: 'Celebrate African and Afro-diaspora cultures.', symbol: '3' },
+    { name: 'Europe', label: 'Europe Hub', info: 'Connect with Western and Eastern Europeans.', symbol: '4' },
   ];
 
   return (
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} />
       <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={30} color="black" />
+        <Ionicons name="arrow-back" size={30} color="black" />
       </TouchableOpacity>
-
-
+  
       <View style={styles.leftContent}>
-            <View style={styles.iconContent}>
-              <Image source={require(imageLocation)} style={styles.resourceImage} />
-            </View>
-            <View style={styles.textContent}>
-              <Text style={styles.sectionHeader}>{headerTextForPage}</Text>
-              <Text style={styles.headerText2}>Chat with our AI expert or</Text>
-              <Text style={styles.headerText2}>Click for Help in ANY Hub </Text>
-            </View>
+        <View style={styles.iconContent}>
+          <Image source={require(imageLocation)} style={styles.resourceImage} />
+        </View>
+        <View style={styles.textContent}>
+          <Text style={styles.sectionHeader}>{headerTextForPage}</Text>
+        </View>
       </View>
-
-           
+  
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-
-{/* Financial Education Resources */}
-<View style={styles.sectionContainer}>
-                <Text style={styles.sectionHeader}>Healthcare Resources</Text>
-                <Dropdown 
-                    title="Healthcare Title 1"
-                    icon={require('../assets/creditScore.jpg')} // Adjust the icon path
-                    content={
-                        <View>
-                            <Text style={styles.bulletPoint}>• H 1.1</Text>
-                            <Text style={styles.bulletPoint}>• H 1.2</Text>
-                            <Text style={styles.bulletPoint}>• H 1.3</Text>
-                        </View>
-                    }
-                />
-                <Dropdown 
-                    title="Healthcare Title 2"
-                    icon={require('../assets/creditCard.jpg')} // Adjust the icon path
-                    content={
-                        <View>
-                            <Text style={styles.bulletPoint}>• H 2.1</Text>
-                            <Text style={styles.bulletPoint}>• H 2.2</Text>
-                            <Text style={styles.bulletPoint}>• H 2.3</Text>
-                        </View>
-                    }
-                />
-                <Dropdown 
-                    title="Healthcare Title 3"
-                    icon={require('../assets/budget.png')} // Adjust the icon path
-                    content={
-                        <View>
-                            <Text style={styles.bulletPoint}>• H 3.1</Text>
-                            <Text style={styles.bulletPoint}>• H 3.2</Text>
-                            <Text style={styles.bulletPoint}>• H 3.3</Text>
-                        </View>
-                    }
-                />
-                
-            </View>
-
-
-
-        {/* AI Chat Window */}
-            {/* Banner Image */}
-            <Image
-              source={require('../assets/chatgpt.png')} // Adjust the path based on your folder structure
-              style={styles.banner}
-              resizeMode="cover" // Ensures the image covers the width while keeping the aspect ratio
-            />
-            
-            {/* Hub Content */}
-            <View style={styles.content}>
-              <Text style={styles.sectionHeader}>{askMeAnything}</Text>
-            </View>
-            <View style={styles.inputArea}>
-              <TextInput
-                style={styles.input}
-                value={message}
-                onChangeText={(text) => setMessage(text)}
-                placeholder="Type a message..."
-              />
-              <Button title="Send" onPress={sendChatMessage} />
-            </View>
-            <View style={styles.chatArea}>
-              {conversation.map((msg, index) => (
-                <Text key={index} style={msg.role === 'user' ? styles.userMessage : styles.botMessage}>
-                  {msg.content}
-                </Text>
-              ))}
-            </View>
-            <Text style={styles.sectionHeader}>NEED HELP?, contact ANY Affinity group below:</Text>
-            {hubs.map((hub, index) => (
+        {/* Hub Content */}
+        <Text style={styles.sectionHeader}>Need Help? Contact Hub Below:</Text>
+        {hubs.map((hub, index) => (
           <TouchableOpacity key={index} style={styles.hubRow} onPress={() => navigateToHub(hub.name, resourceId)}>
             <View style={styles.leftContent}>
               <View style={styles.iconContent}>
@@ -186,19 +112,44 @@ const Resource3 = ({ navigation }) => {
             </View>
           </TouchableOpacity>
         ))}
-            
-    
+  
+        {/* AI Chat Window */}
+        <Image
+          source={require('../assets/chatgptscreen.jpg')} // Adjust the path based on your folder structure
+          style={styles.banner}
+          resizeMode="cover" // Ensures the image covers the width while keeping the aspect ratio
+        />
+        
+        <View style={styles.content}>
+          <Text style={styles.sectionHeader}>{askMeAnything}</Text>
+        </View>
+        <View style={styles.inputArea}>
+          <TextInput
+            style={styles.input}
+            value={message}
+            onChangeText={(text) => setMessage(text)}
+            placeholder="Type a message..."
+          />
+          <Button title="Send" onPress={sendChatMessage} />
+        </View>
+        <View style={styles.chatArea}>
+          {conversation.map((msg, index) => (
+            <Text key={index} style={msg.role === 'user' ? styles.userMessage : styles.botMessage}>
+              {msg.content}
+            </Text>
+          ))}
+        </View>
       </ScrollView>
       <BottomTabs icons={bottomTabIcons} navigation={navigation} isFocused={isFocused} />
     </SafeAreaView>
   );
+  
 };
 
 const styles = StyleSheet.create({
   banner: {
-    width: '100%', // Full width of the screen
-    height: 100, // Adjust the height as needed for the banner
-    marginBottom: 5, // Space between the banner and the rest of the content
+    width: '100%',
+    height: 200,
   },
   container: {
     backgroundColor: 'white',
@@ -213,29 +164,35 @@ const styles = StyleSheet.create({
   },
   chatArea: {
     padding: 16,
-    backgroundColor: '#f0f0f0',
+    // Change backgroundColor to white or remove it
+    backgroundColor: 'white', // or 'transparent'
     minHeight: 200,
   },
   inputArea: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#fff',
+    // Set the background color to white or remove it
+    backgroundColor: 'white', // or 'transparent'
   },
   input: {
     flex: 1,
-    marginRight: 16,
-    padding: 8,
-    borderColor: '#ccc',
     borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    padding: 10,
   },
   userMessage: {
-    textAlign: 'right',
-    color: 'blue',
+    backgroundColor: '#e1ffc7',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 5,
   },
   botMessage: {
-    textAlign: 'left',
-    color: 'green',
+    backgroundColor: '#d0d0d0',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 5,
   },
   scrollContainer: {
     paddingVertical: 20,
