@@ -7,12 +7,7 @@ import 'firebase/compat/storage'; // Import Firebase Storage
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyANNxOZ2znSiwqp5HPGYuGx_dPHKhVN1W0",
-  authDomain: "culturebridge-congressionalapp.firebaseapp.com",
-  projectId: "culturebridge-congressionalapp",
-  storageBucket: "culturebridge-congressionalapp.appspot.com",
-  messagingSenderId: "473820118245",
-  appId: "1:473820118245:web:5a9d79f73c3820bdea280c"
+  // Your Firebase configuration details
 };
 
 // Initialize Firebase
