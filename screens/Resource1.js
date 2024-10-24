@@ -7,15 +7,14 @@ import { bottomTabIcons } from '../components/home/BottomTabs';
 import { useIsFocused } from '@react-navigation/native';
 import { firebase, db } from '../firebase';
 import sendChatRequest from '../components/AIChatgpttext/AIChatgptTextComponents';
-import Dropdown from '../components/education/Dropdown'; // Adjust the path based on your structure
 
 const Resource1 = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const isFocused = useIsFocused();
-  const resourceId = 'resource1'; // Updated resource ID
-  const chatRole = 'You are a local community advisor'; // Adjust the role
-  const imageLocation = '../assets/Community.png'; // Update image path
-  const headerTextForPage = 'Local Community Resources'; // Updated header
+  const resourceId = 'resource1'; 
+  const chatRole = 'You are a local community advisor'; 
+  const imageLocation = '../assets/Community.png'; 
+  const headerTextForPage = 'Local Community Resources'; 
   const askMeAnything = 'Ask Anything!';
 
   useEffect(() => {
