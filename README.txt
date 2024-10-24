@@ -1,3 +1,10 @@
+## View our app demo:
+https://youtu.be/EwFX8pV9f-o
+
+Submitted to congressional app challenge 2024 NJ07
+
+
+
 npx create-expo-app@latest ProjectName --template blank@latest
 
 
